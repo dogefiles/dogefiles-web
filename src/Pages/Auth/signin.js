@@ -11,23 +11,40 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Tooltip,
-  IconButton,
-  HStack,
   FormHelperText,
 } from "@chakra-ui/react";
-import { FcGoogle } from "react-icons/fc";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "Utils/AuthContext";
 import { Link as ReactLink } from "react-router-dom";
+import GoogleAuth from "Components/GoogleAuth";
+import Axios from "Utils/Axios";
 
 export default function SimpleCard({ history }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signin, currentUser, googleOAuth } = useAuth();
+  const { signin, currentUser, getUserToken } = useAuth();
+
+  const verificationCheck = useCallback(async () => {
+    if (currentUser) {
+      if (currentUser?.emailVerified) {
+        console.log(await getUserToken());
+        const config = {
+          headers: {
+            Authorization: `Bearer ${await getUserToken()}`,
+          },
+        };
+
+        const { data } = await Axios.get("/auth", config);
+        console.log(data);
+        history.push("/");
+      }
+
+      setError("Please check your email inbox for user verification");
+    }
+  }, [currentUser, history, getUserToken]);
 
   const handelSignInSubmit = async e => {
     e.preventDefault();
@@ -35,7 +52,7 @@ export default function SimpleCard({ history }) {
       setError("");
       setLoading(true);
       await signin(email, password);
-      history.push("/");
+      verificationCheck();
     } catch (err) {
       setError(`${err.message}, Failed to SignIn`);
     }
@@ -44,8 +61,8 @@ export default function SimpleCard({ history }) {
   };
 
   useEffect(() => {
-    if (currentUser) history.push("/");
-  }, [currentUser, history]);
+    if (currentUser) verificationCheck();
+  }, [currentUser, history, verificationCheck]);
 
   return (
     <Flex
@@ -56,9 +73,12 @@ export default function SimpleCard({ history }) {
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
-          <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool <Link color={"blue.400"}>features</Link> ✌️
+          <Heading fontSize={"4xl"} color="primary.500">
+            Sign in to Dogefiles
+          </Heading>
+          <Text fontSize={"lg"} color={"primary.500"}>
+            to enjoy all of our cool <Link color={"primary.300"}>features</Link>{" "}
+            ✌️
           </Text>
         </Stack>
         <Box
@@ -70,7 +90,9 @@ export default function SimpleCard({ history }) {
           <Stack spacing={4}>
             <form onSubmit={handelSignInSubmit}>
               <FormControl id="email">
-                <FormHelperText color="red.500">{error}</FormHelperText>
+                <FormHelperText color="primary.500" my="2">
+                  {error}
+                </FormHelperText>
                 <FormLabel>Email address</FormLabel>
                 <Input
                   type="email"
@@ -98,36 +120,37 @@ export default function SimpleCard({ history }) {
                   <Link color={"blue.400"}>Forgot password?</Link>
                 </Stack>
                 <Button
-                  bg={"blue.400"}
+                  bg={"primary.400"}
                   color={"white"}
                   _hover={{
-                    bg: "blue.500",
+                    bg: "primary.500",
                   }}
                   disabled={loading}
                   type="submit"
                 >
                   Sign in
                 </Button>
-                <HStack alignItems="center" justifyContent="center">
+                {/* <HStack alignItems="center" justifyContent="center">
                   <Tooltip
                     hasArrow
                     placement="right"
                     label="Google"
                     fontSize="md"
-                    bg="blue.600"
+                    bg="primary.500"
                     aria-label="Google"
                   >
                     <IconButton
                       colorScheme="whiteAlpha"
                       size="lg"
-                      fontSize="2xl"
+                      fontSize="5xl"
                       background="none"
                       aria-label="Signin with Google"
                       icon={<FcGoogle />}
                       onClick={googleOAuth}
                     />
                   </Tooltip>
-                </HStack>
+                </HStack> */}
+                <GoogleAuth />
                 <Link as={ReactLink} to="/signup" color={"blue.400"}>
                   New User? Signup
                 </Link>

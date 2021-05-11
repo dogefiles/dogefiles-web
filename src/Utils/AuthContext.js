@@ -28,6 +28,13 @@ export function AuthProvider({ children }) {
     return auth.sendPasswordResetEmail(email);
   }
 
+  // Update
+  function updateName(name) {
+    return currentUser.updateProfile({
+      displayName: name,
+    });
+  }
+
   function updateEmail(email) {
     return currentUser.updateEmail(email);
   }
@@ -64,6 +71,7 @@ export function AuthProvider({ children }) {
     signup,
     logout,
     resetPassword,
+    updateName,
     updateEmail,
     updatePassword,
     getUserToken,

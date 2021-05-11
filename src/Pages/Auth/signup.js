@@ -11,25 +11,33 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Tooltip,
-  IconButton,
-  HStack,
   FormHelperText,
 } from "@chakra-ui/react";
-import { FcGoogle } from "react-icons/fc";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "Utils/AuthContext";
 import { Link as ReactLink } from "react-router-dom";
+import GoogleAuth from "Components/GoogleAuth";
 
 function SignUp({ history }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  // const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConf, setPasswordConf] = useState("");
-  const { signup, currentUser, googleOAuth } = useAuth();
+  const { signup, currentUser, logout, updateName } = useAuth();
+
+  const verificationCheck = useCallback(async () => {
+    if (currentUser) {
+      if (currentUser?.emailVerified) history.push("/");
+      setError("Please check your email inbox for user verification");
+      await updateName(name);
+      await currentUser.sendEmailVerification();
+      logout();
+    }
+  }, [currentUser, history, logout, updateName, name]);
 
   const handelSignUpSubmit = async e => {
     e.preventDefault();
@@ -43,7 +51,8 @@ function SignUp({ history }) {
       setLoading(true);
 
       await signup(email, password);
-      history.push("/");
+
+      verificationCheck();
     } catch (err) {
       setError(`${err.message}, Failed to SignUp`);
     }
@@ -52,8 +61,8 @@ function SignUp({ history }) {
   };
 
   useEffect(() => {
-    if (currentUser) history.push("/");
-  }, [currentUser, history]);
+    if (currentUser) verificationCheck();
+  }, [currentUser, history, verificationCheck]);
 
   return (
     <Flex
@@ -64,9 +73,12 @@ function SignUp({ history }) {
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
-          <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool <Link color={"blue.400"}>features</Link> ✌️
+          <Heading fontSize={"4xl"} color="primary.500">
+            Sign up to Dogefiles
+          </Heading>
+          <Text fontSize={"lg"} color={"primary.500"}>
+            to enjoy all of our cool <Link color={"primary.300"}>features</Link>{" "}
+            ✌️
           </Text>
         </Stack>
         <Box
@@ -77,8 +89,19 @@ function SignUp({ history }) {
         >
           <Stack spacing={4}>
             <form onSubmit={handelSignUpSubmit}>
-              <FormControl id="email">
-                <FormHelperText color="red.500">{error}</FormHelperText>
+              <FormControl>
+                <FormHelperText color="primary.500" my="2">
+                  {error}
+                </FormHelperText>
+                <FormLabel>Name</FormLabel>
+                <Input
+                  type="name"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+              </FormControl>
+
+              <FormControl>
                 <FormLabel>Email address</FormLabel>
                 <Input
                   type="email"
@@ -87,7 +110,7 @@ function SignUp({ history }) {
                 />
               </FormControl>
 
-              <FormControl id="password">
+              <FormControl>
                 <FormLabel>Password</FormLabel>
                 <Input
                   type="password"
@@ -96,7 +119,7 @@ function SignUp({ history }) {
                 />
               </FormControl>
 
-              <FormControl id="password">
+              <FormControl>
                 <FormLabel>Repeat Password</FormLabel>
                 <Input
                   type="password"
@@ -115,36 +138,17 @@ function SignUp({ history }) {
                   <Link color={"blue.400"}>Forgot password?</Link>
                 </Stack>
                 <Button
-                  bg={"blue.400"}
+                  bg={"primary.400"}
                   color={"white"}
                   _hover={{
-                    bg: "blue.500",
+                    bg: "primary.500",
                   }}
                   disabled={loading}
                   type="submit"
                 >
                   Sign up
                 </Button>
-                <HStack alignItems="center" justifyContent="center">
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    label="Google"
-                    fontSize="md"
-                    bg="blue.600"
-                    aria-label="Google"
-                  >
-                    <IconButton
-                      colorScheme="whiteAlpha"
-                      size="lg"
-                      fontSize="2xl"
-                      background="none"
-                      aria-label="Signin with Google"
-                      icon={<FcGoogle />}
-                      onClick={googleOAuth}
-                    />
-                  </Tooltip>
-                </HStack>
+                <GoogleAuth />
                 <Link as={ReactLink} to="/signin" color={"blue.400"}>
                   Already have an account? Signin
                 </Link>

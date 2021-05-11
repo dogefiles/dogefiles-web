@@ -70,8 +70,8 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
             <Wrap>
               <WrapItem>
                 <Avatar
-                  name="Dan Abrahmov"
-                  src="https://bit.ly/dan-abramov"
+                  name="Dogefiles"
+                  src="https://i1.sndcdn.com/avatars-000459287565-8boqnr-t500x500.jpg"
                   size="sm"
                 />
               </WrapItem>

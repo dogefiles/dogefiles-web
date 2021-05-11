@@ -1,7 +1,9 @@
 const styles = {
   global: {
     // styles for the `body`
-    body: {},
+    body: {
+      // color: "primary.400",
+    },
   },
 };
 
