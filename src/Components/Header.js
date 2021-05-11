@@ -18,8 +18,7 @@ import {
   Icon,
   IconButton,
 } from "@chakra-ui/react";
-import { FcSearch } from "react-icons/fc";
-import { FiLogOut, FiSettings, FiMenu } from "react-icons/fi";
+import { FiLogOut, FiSettings, FiMenu, FiSearch } from "react-icons/fi";
 import { useAuth } from "Utils/AuthContext";
 import { useLocation } from "react-router-dom";
 
@@ -47,7 +46,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
         )}
         <Image
           padding="2"
-          src="https://i.postimg.cc/MG5K9Y6q/kisspng-cloud-computing-logo-dedicated-hosting-service-clouds-5ab45ad1a90225-0895814115217691696923.png"
+          src="https://avatars.githubusercontent.com/u/83980120?s=200&v=4"
           alt="Logo"
           objectFit="cover"
           width="4.5rem"
@@ -59,8 +58,9 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
           <InputGroup>
             <Input placeholder="Search in Cloud" bg="white" />
             <InputRightElement
-              children={<FcSearch />}
+              children={<FiSearch />}
               onClick={() => alert("Search")}
+              color="primary.500"
             />
           </InputGroup>
         )}
@@ -82,7 +82,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
             <MenuItem minH="48px" onClick={() => alert("hello")}>
               <Icon
                 as={FiSettings}
-                color="blue.500"
+                color="primary.500"
                 icon={<FiSettings />}
                 mr="12px"
               />
@@ -91,7 +91,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
             <MenuItem minH="40px" onClick={logout}>
               <Icon
                 as={FiLogOut}
-                color="blue.500"
+                color="primary.500"
                 icon={<FiSettings />}
                 mr="12px"
               />

@@ -68,6 +68,7 @@ import {
   DrawerHeader,
   DrawerBody,
   DrawerContent,
+  Image,
 } from "@chakra-ui/react";
 import {
   FiCloud,
@@ -81,13 +82,23 @@ import { Link as RouterLink } from "react-router-dom";
 const NavLinks = ({ Icon, Title, onClick }) => {
   return (
     <Link as={RouterLink} to={`/${Title.toLowerCase()}`}>
-      <Tooltip hasArrow label={Title} placement="right" color="white" bg="pink">
+      <Tooltip
+        hasArrow
+        label={Title}
+        placement="right"
+        color="white"
+        bg="primary.500"
+      >
         <Button
           leftIcon={<Icon />}
           variant="outline"
           justifyContent="left"
           width="100%"
           onClick={onClick}
+          _hover={{
+            color: "white",
+            bg: "primary.400",
+          }}
         >
           {Title}
         </Button>
@@ -100,16 +111,23 @@ const Nav = () => {
   return (
     <>
       <Box py="2">
-        <Heading as="h3" size="md" my="2" color="teal">
+        <Heading as="h3" size="md" my="2" color="primary.500">
           Pro User
         </Heading>
-        <Tooltip hasArrow label="New" placement="right" color="white" bg="pink">
+        <Tooltip
+          hasArrow
+          label="New"
+          placement="right"
+          color="white"
+          bg="primary.400"
+        >
           <Button
             leftIcon={<FiPlus />}
-            color="blue.500"
+            color="white"
+            bg="primary.400"
             variant="outline"
             boxShadow="sm"
-            _hover={{ color: "white", bg: "blue.500" }}
+            _hover={{ color: "white", bg: "primary.500" }}
           >
             New
           </Button>
@@ -135,7 +153,14 @@ export default function Navbar({ isOpen, variant, onClose }) {
       <DrawerOverlay>
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Cloud Company</DrawerHeader>
+          <DrawerHeader color="primary.500" fontSize="4xl">
+            <Image
+              src="https://avatars.githubusercontent.com/u/83980120?s=200&v=4"
+              alt="Logo"
+              objectFit="cover"
+              width="50%"
+            />
+          </DrawerHeader>
           <DrawerBody>
             <Nav />
           </DrawerBody>
