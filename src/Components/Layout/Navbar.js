@@ -77,9 +77,11 @@ import {
   FiPlus,
   FiUploadCloud,
 } from "react-icons/fi";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 
 const NavLinks = ({ Icon, Title, onClick }) => {
+  const { pathname } = useLocation();
+
   return (
     <Link as={RouterLink} to={`/${Title.toLowerCase()}`}>
       <Tooltip
@@ -94,6 +96,8 @@ const NavLinks = ({ Icon, Title, onClick }) => {
           variant="outline"
           justifyContent="left"
           width="100%"
+          color={`${pathname.includes(Title.toLowerCase()) && "white"}`}
+          bg={`${pathname.includes(Title.toLowerCase()) && "primary.500"}`}
           onClick={onClick}
           _hover={{
             color: "white",
