@@ -12,14 +12,17 @@ import {
   Text,
   useColorModeValue,
   FormHelperText,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "Utils/AuthContext";
 import { Link as ReactLink } from "react-router-dom";
-import GoogleAuth from "Components/GoogleAuth";
+import { GoogleAuth } from "Components/Auth";
+import { Error } from "Components/Feedback";
 
 function SignUp({ history }) {
+  const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -31,13 +34,18 @@ function SignUp({ history }) {
 
   const verificationCheck = useCallback(async () => {
     if (currentUser) {
-      if (currentUser?.emailVerified) history.push("/");
-      setError("Please check your email inbox for user verification");
+      if (currentUser?.emailVerified) return history.push("/");
+
       await updateName(name);
       await currentUser.sendEmailVerification();
+      toast({
+        title: "User Verification Email Sent",
+        status: "success",
+        isClosable: true,
+      });
       logout();
     }
-  }, [currentUser, history, logout, updateName, name]);
+  }, [currentUser, history, logout, updateName, name, toast]);
 
   const handelSignUpSubmit = async e => {
     e.preventDefault();
@@ -55,13 +63,14 @@ function SignUp({ history }) {
       verificationCheck();
     } catch (err) {
       setError(`${err.message}, Failed to SignUp`);
+      setTimeout(() => setError(""), 10000);
     }
 
     setLoading(false);
   };
 
   useEffect(() => {
-    if (currentUser) verificationCheck();
+    if (currentUser) return verificationCheck();
   }, [currentUser, history, verificationCheck]);
 
   return (
@@ -90,8 +99,8 @@ function SignUp({ history }) {
           <Stack spacing={4}>
             <form onSubmit={handelSignUpSubmit}>
               <FormControl>
-                <FormHelperText color="primary.500" my="2">
-                  {error}
+                <FormHelperText color="primary.700" my="2">
+                  {error && <Error error={error} />}
                 </FormHelperText>
                 <FormLabel>Name</FormLabel>
                 <Input
@@ -135,7 +144,9 @@ function SignUp({ history }) {
                   justify={"space-between"}
                 >
                   <Checkbox>Remember me</Checkbox>
-                  <Link color={"blue.400"}>Forgot password?</Link>
+                  <Link as={ReactLink} color={"blue.400"} to="/forgotpassword">
+                    Forgot password?
+                  </Link>
                 </Stack>
                 <Button
                   bg={"primary.400"}

@@ -4,7 +4,7 @@ import { AuthProvider } from "Utils/AuthContext";
 import { Switch, Route } from "react-router-dom";
 import PrivateRoute from "Components/PrivateRoute";
 import AllPages from "Pages";
-import { SignIn, SignUp } from "Pages/Auth";
+import { SignIn, SignUp, ForgotPassword } from "Pages/Auth";
 import Theme from "Theme";
 
 function App() {
@@ -14,6 +14,7 @@ function App() {
         <Switch>
           <Route exact path="/signin" component={SignIn} />
           <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/forgotpassword" component={ForgotPassword} />
           <PrivateRoute exact component={AllPages}></PrivateRoute>
         </Switch>
       </AuthProvider>

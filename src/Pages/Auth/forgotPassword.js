@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Stack,
   Link,
   Button,
@@ -12,57 +11,58 @@ import {
   Text,
   useColorModeValue,
   FormHelperText,
+  Alert,
   useToast,
 } from "@chakra-ui/react";
+import { FiAlertCircle } from "react-icons/fi";
 
 import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "Utils/AuthContext";
 import { Link as ReactLink } from "react-router-dom";
-import { GoogleAuth } from "Components/Auth";
-import { Error } from "Components/Feedback";
-import Axios from "Utils/Axios";
 
-export default function SimpleCard({ history }) {
+export default function ForgotPassword({ history }) {
   const toast = useToast();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { signin, currentUser, getUserToken } = useAuth();
+  const { currentUser, resetPassword } = useAuth();
+  const [wait, setWait] = useState(false);
 
   const verificationCheck = useCallback(async () => {
     if (currentUser) {
-      if (!currentUser.emailVerified)
-        return setError("Please check your email inbox for user verification");
+      if (currentUser?.emailVerified) history.push("/");
+    }
+  }, [currentUser, history]);
 
-      const config = {
-        headers: {
-          Authorization: `Bearer ${await getUserToken()}`,
-        },
-      };
-
-      const { data } = await Axios.get("/auth", config);
-      console.log(data);
-      toast({
-        title: `Welcome Back, ${currentUser.displayName}`,
-        status: "success",
+  const handelForgotPasswordSubmit = async e => {
+    e.preventDefault();
+    if (wait) {
+      return toast({
+        title: "Please wait 30 seconds before sending resend link",
+        status: "warning",
         isClosable: true,
       });
-      history.push("/");
     }
-  }, [currentUser, history, getUserToken, toast]);
 
-  const handelSignInSubmit = async e => {
-    e.preventDefault();
     try {
       setError("");
       setLoading(true);
-      await signin(email, password);
-      verificationCheck();
+      await resetPassword(email);
+      setWait(true);
+      toast({
+        title: "Password Reset Link Sent",
+        status: "success",
+        isClosable: true,
+      });
+      setTimeout(() => {
+        setWait(false);
+      }, 30000);
     } catch (err) {
-      setError(`${err.message}, Failed to SignIn`);
-      setTimeout(() => setError(""), 10000);
+      setError(err.message);
+      setTimeout(() => {
+        setError("");
+      }, 10000);
     }
 
     setLoading(false);
@@ -82,7 +82,7 @@ export default function SimpleCard({ history }) {
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} color="primary.500">
-            Sign in to Dogefiles
+            Forgot Password
           </Heading>
           <Text fontSize={"lg"} color={"primary.500"}>
             to enjoy all of our cool <Link color={"primary.300"}>features</Link>{" "}
@@ -96,10 +96,15 @@ export default function SimpleCard({ history }) {
           p={8}
         >
           <Stack spacing={4}>
-            <form onSubmit={handelSignInSubmit}>
+            <form onSubmit={handelForgotPasswordSubmit}>
               <FormControl id="email">
-                <FormHelperText color="primary.500" my="2">
-                  {error && <Error error={error} />}
+                <FormHelperText color="primary.600" my="2">
+                  {error && (
+                    <Alert status="error">
+                      <FiAlertCircle />
+                      {error}
+                    </Alert>
+                  )}
                 </FormHelperText>
                 <FormLabel>Email address</FormLabel>
                 <Input
@@ -109,24 +114,14 @@ export default function SimpleCard({ history }) {
                 />
               </FormControl>
 
-              <FormControl id="password">
-                <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                />
-              </FormControl>
-
               <Stack spacing={5}>
                 <Stack
                   direction={{ base: "column", sm: "row" }}
                   align={"start"}
                   justify={"space-between"}
                 >
-                  <Checkbox>Remember me</Checkbox>
-                  <Link as={ReactLink} color={"blue.400"} to="/forgotpassword">
-                    Forgot password?
+                  <Link color={"blue.400"} onClick={() => history.goBack()}>
+                    Back
                   </Link>
                 </Stack>
                 <Button
@@ -138,29 +133,8 @@ export default function SimpleCard({ history }) {
                   disabled={loading}
                   type="submit"
                 >
-                  Sign in
+                  Forgot Password
                 </Button>
-                {/* <HStack alignItems="center" justifyContent="center">
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    label="Google"
-                    fontSize="md"
-                    bg="primary.500"
-                    aria-label="Google"
-                  >
-                    <IconButton
-                      colorScheme="whiteAlpha"
-                      size="lg"
-                      fontSize="5xl"
-                      background="none"
-                      aria-label="Signin with Google"
-                      icon={<FcGoogle />}
-                      onClick={googleOAuth}
-                    />
-                  </Tooltip>
-                </HStack> */}
-                <GoogleAuth />
                 <Link as={ReactLink} to="/signup" color={"blue.400"}>
                   New User? Signup
                 </Link>
