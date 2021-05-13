@@ -1,7 +1,6 @@
 import { HStack, Tooltip, IconButton } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { useAuth } from "Utils/AuthContext";
-// import Axios from "Utils/Axios";
 
 export default function GoogleAuth() {
   const { googleOAuth } = useAuth();
