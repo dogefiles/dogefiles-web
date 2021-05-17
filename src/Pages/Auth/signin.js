@@ -20,7 +20,7 @@ import { useAuth } from "Utils/AuthContext";
 import { Link as ReactLink } from "react-router-dom";
 import { GoogleAuth } from "Components/Auth";
 import { Error } from "Components/Feedback";
-import Axios from "Utils/Axios";
+import { userCheck } from "APIs/auth";
 
 export default function SimpleCard({ history }) {
   const toast = useToast();
@@ -29,29 +29,33 @@ export default function SimpleCard({ history }) {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signin, currentUser, getUserToken } = useAuth();
+  const { signin, currentUser, getUserToken, logout } = useAuth();
 
   const verificationCheck = useCallback(async () => {
     if (currentUser) {
       if (!currentUser.emailVerified)
         return setError("Please check your email inbox for user verification");
 
-      const config = {
-        headers: {
-          Authorization: `Bearer ${await getUserToken()}`,
-        },
-      };
-
-      const { data } = await Axios.get("/auth", config);
-      console.log(data);
-      toast({
-        title: `Welcome Back, ${currentUser.displayName}`,
-        status: "success",
-        isClosable: true,
-      });
-      history.push("/");
+      const userToken = await getUserToken();
+      await userCheck(userToken)
+        .then(res => {
+          toast({
+            title: `Welcome Back, ${currentUser.displayName}`,
+            status: "success",
+            isClosable: true,
+          });
+          return history.push("/");
+        })
+        .catch(err => {
+          toast({
+            title: "There was an error signing up",
+            status: "error",
+            isClosable: true,
+          });
+          return logout();
+        });
     }
-  }, [currentUser, history, getUserToken, toast]);
+  }, [currentUser, history, getUserToken, toast, logout]);
 
   const handelSignInSubmit = async e => {
     e.preventDefault();
@@ -64,7 +68,6 @@ export default function SimpleCard({ history }) {
       setError(`${err.message}, Failed to SignIn`);
       setTimeout(() => setError(""), 10000);
     }
-
     setLoading(false);
   };
 
@@ -140,26 +143,6 @@ export default function SimpleCard({ history }) {
                 >
                   Sign in
                 </Button>
-                {/* <HStack alignItems="center" justifyContent="center">
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    label="Google"
-                    fontSize="md"
-                    bg="primary.500"
-                    aria-label="Google"
-                  >
-                    <IconButton
-                      colorScheme="whiteAlpha"
-                      size="lg"
-                      fontSize="5xl"
-                      background="none"
-                      aria-label="Signin with Google"
-                      icon={<FcGoogle />}
-                      onClick={googleOAuth}
-                    />
-                  </Tooltip>
-                </HStack> */}
                 <GoogleAuth />
                 <Link as={ReactLink} to="/signup" color={"blue.400"}>
                   New User? Signup
