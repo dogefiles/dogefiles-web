@@ -64,7 +64,6 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
             />
           </InputGroup>
         )}
-
         <Menu>
           <MenuButton>
             <Wrap>
