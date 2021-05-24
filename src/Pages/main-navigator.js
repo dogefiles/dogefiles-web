@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Redirect, Switch } from "react-router-dom";
 import PrivateRoute from "Components/PrivateRoute";
 import { Flex, useBreakpointValue } from "@chakra-ui/react";
-import { Header, Navbar } from "Components/Layout";
+import { Header, Navbar, UploadsManager } from "Components/Layout";
 import { Cloud, Folder } from "Pages/Cloud";
 import { Bin } from "Pages/Bin";
 import Upload from "Components/Upload";
@@ -97,8 +97,10 @@ export default function MainNavigator() {
 
             <PrivateRoute path="/settings" component={Settings}></PrivateRoute>
           </Switch>
+
+          {/* Uploads Manager */}
+          <UploadsManager />
         </Flex>
-        {/* <div>Footer</div> */}
       </Flex>
     </Flex>
   );

@@ -9,7 +9,7 @@ import App from "./App";
 ReactDOM.render(
   <StrictMode>
     <ColorModeScript />
-    <BrowserRouter basename="/app">
+    <BrowserRouter>
       <Provider store={store}>
         <App />
       </Provider>

@@ -1,5 +1,5 @@
-export const demoReducer = (state = { demo: 1 }, action) => {
-  switch(action.type) {
+export const demoReducer = (state = { demo: 0 }, action) => {
+  switch (action.type) {
     case "1":
       return { demo: 1 };
     case "2":
@@ -7,4 +7,4 @@ export const demoReducer = (state = { demo: 1 }, action) => {
     default:
       return state;
   }
-}
+};
