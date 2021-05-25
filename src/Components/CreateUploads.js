@@ -22,18 +22,20 @@ import {
 import { useAuth } from "Utils/AuthContext";
 import { useSelector } from "react-redux";
 
-import { presignedUrl } from "APIs/s3";
+import { presignedUrl, saveFileToDB } from "APIs/s3";
 import { FiX } from "react-icons/fi";
 import TypeIdentifier from "./TypeIdentifier";
+import { useDispatch } from "react-redux";
 
 const getPresignedUrl = async (fileInfo, config) => {
   const { data } = await presignedUrl(fileInfo, config);
   return data;
 };
 
-function PleaseUploads({ file }) {
+function PleaseUpload({ file }) {
   const { getUserToken, currentUser } = useAuth();
   const [toggle, setToggle] = useState(false);
+  const dispatch = useDispatch();
 
   const cancelUpload = () => {
     if (cancelFileUpload.current)
@@ -85,6 +87,7 @@ function PleaseUploads({ file }) {
       formData.append(name, data[name]);
     }
 
+    // Upload File to Presigned Url
     await Axios.post(url, formData, {
       onUploadProgress: progressEvent => {
         const { loaded, total } = progressEvent;
@@ -110,7 +113,8 @@ function PleaseUploads({ file }) {
         }, 1000);
 
         //save file to DB
-        await Axios.post("/S3/saveFileToDB", preSignedFileInfo);
+        await saveFileToDB(preSignedFileInfo);
+        dispatch(() => dispatch({ type: "cloud" }));
       })
       .catch(err => {
         console.log(err.message);
@@ -189,15 +193,6 @@ function PleaseUploads({ file }) {
                 </PopoverContent>
               )}
             </Popover>
-            {/* <IconButton
-              aria-label="Cancel upload"
-              icon={<FiX />}
-              size="sm"
-              borderRadius="50%"
-              bg="white"
-              _hover={{ bg: "red.400" }}
-              onClick={() => cancelUpload()}
-            /> */}
           </HStack>
         </Flex>
       )}
@@ -212,7 +207,7 @@ export default function CreateUploads() {
     <>
       {files.map(file =>
         file.map((f, index) => {
-          return <PleaseUploads key={index} file={f} />;
+          return <PleaseUpload key={index} file={f} />;
         })
       )}
     </>

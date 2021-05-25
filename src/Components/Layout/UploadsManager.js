@@ -10,35 +10,6 @@ import { useState } from "react";
 import { FiUploadCloud, FiPlus } from "react-icons/fi";
 import CreateUploads from "Components/CreateUploads";
 
-// const CreateUpload = ({ amount }) => {
-//   return [...Array(amount).keys()].map(key => (
-//     <Box
-//       key={key}
-//       border="1px"
-//       pb={1}
-//       px={1}
-//       borderColor="primary.400"
-//       my={1.5}
-//       borderBottomRightRadius="10px"
-//       borderLeftRadius="10px"
-//       width="100%"
-//     >
-//       <Text textAlign="center">Car.mp4</Text>
-//       <HStack alignItems="center" justifyContent="space-between">
-//         <Icon as={FiVideo} color="green.500" />
-//         <Progress
-//           hasStripe
-//           value={90}
-//           colorScheme="yellow"
-//           isAnimated={true}
-//           max={100}
-//           width="95%"
-//         />
-//       </HStack>
-//     </Box>
-//   ));
-// };
-
 export default function Manager() {
   const [toggle, setToggle] = useState(true);
   return (
