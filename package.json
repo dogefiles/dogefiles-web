@@ -1,6 +1,7 @@
 {
   "name": "chakra-company",
   "version": "0.1.0",
+  "proxy": "http://dogefiles.herokuapp.com"
   "private": true,
   "dependencies": {
     "@chakra-ui/react": "^1.6.1",
