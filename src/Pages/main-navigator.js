@@ -7,6 +7,7 @@ import { Cloud, Folder } from "Pages/Cloud";
 import { Bin } from "Pages/Bin";
 import Upload from "Components/Upload";
 import { Settings } from "Pages/Settings";
+import { Earnings } from "Pages/Earnings";
 
 const smVariant = { navigation: "drawer", navigationButton: true };
 const mdVariant = { navigation: "sidebar", navigationButton: false };
@@ -93,6 +94,7 @@ export default function MainNavigator() {
               component={Upload}
             ></PrivateRoute>
 
+            <PrivateRoute path="/earnings" component={Earnings}></PrivateRoute>
             <PrivateRoute path="/bin" component={Bin}></PrivateRoute>
 
             <PrivateRoute path="/settings" component={Settings}></PrivateRoute>
