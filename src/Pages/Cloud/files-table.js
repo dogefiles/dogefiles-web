@@ -19,7 +19,7 @@ import { useState } from "react";
 
 const copyDownloadLink = key => {
   let tempInput = document.createElement("input");
-  tempInput.value = `www.dogefiles.io/download/${key}`;
+  tempInput.value = `www.dogefiles-next.vercel.app/download/${key}`;
   document.body.appendChild(tempInput);
   tempInput.select();
   document.execCommand("copy");
