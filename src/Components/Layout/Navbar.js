@@ -13,6 +13,7 @@ import {
   DrawerBody,
   DrawerContent,
   Image,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import {
   FiCloud,
@@ -26,7 +27,7 @@ import NewButton from "./NewButton";
 
 const NavLinks = ({ Icon, Title, onClick }) => {
   const { pathname } = useLocation();
-
+  const navBtnColor = useColorModeValue("gray.600", "gray.400");
   return (
     <Link as={RouterLink} to={`/${Title.toLowerCase()}`}>
       <Tooltip
@@ -41,7 +42,10 @@ const NavLinks = ({ Icon, Title, onClick }) => {
           variant="outline"
           justifyContent="left"
           width="100%"
-          color={`${pathname.includes(Title.toLowerCase()) && "white"}`}
+          // color={`${pathname.includes(Title.toLowerCase()) && "white"}`}
+          color={`${
+            pathname.includes(Title.toLowerCase()) ? "white" : navBtnColor
+          }`}
           bg={`${pathname.includes(Title.toLowerCase()) && "primary.500"}`}
           onClick={onClick}
           _hover={{

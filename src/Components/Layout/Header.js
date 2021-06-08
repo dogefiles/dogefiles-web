@@ -17,14 +17,18 @@ import {
   MenuItem,
   Icon,
   IconButton,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { FiLogOut, FiSettings, FiMenu, FiSearch } from "react-icons/fi";
 import { useAuth } from "Utils/AuthContext";
 import { useLocation } from "react-router-dom";
+import ThemeToggle from "Components/ThemeToggle";
 
 const Header = ({ showSidebarButton, onShowSidebar }) => {
   const { logout } = useAuth();
   const { pathname } = useLocation();
+  const inputBg = useColorModeValue("white", "gray.800");
+  const borderBottomColor = useColorModeValue("gray.200", "gray.600");
   return (
     // <HStack width="100%" paddingX="1" height="14">
     <HStack
@@ -32,7 +36,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
       paddingX="1"
       height="14"
       borderBottom="1px"
-      borderColor="gray.200"
+      borderColor={borderBottomColor}
       justifyContent="space-between"
     >
       <HStack>
@@ -56,7 +60,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
       <HStack flex={pathname === "/cloud" && 1}>
         {pathname === "/cloud" && (
           <InputGroup>
-            <Input placeholder="Search in Cloud" bg="white" />
+            <Input placeholder="Search in Cloud" bg={inputBg} />
             <InputRightElement
               children={<FiSearch />}
               onClick={() => alert("Search")}
@@ -98,6 +102,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
             </MenuItem>
           </MenuList>
         </Menu>
+        <ThemeToggle />
       </HStack>
     </HStack>
   );
