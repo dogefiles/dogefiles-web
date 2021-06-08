@@ -9,6 +9,7 @@ import {
   useToast,
   Button,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { deleteFile, updatePrivacy } from "APIs/s3";
 import { useAuth } from "Utils/AuthContext";
@@ -17,9 +18,9 @@ import { FiDelete, FiEye, FiEyeOff, FiShare2 } from "react-icons/fi";
 import TypeIdentifider from "Components/TypeIdentifier";
 import { useState } from "react";
 
-const copyDownloadLink = key => {
+const copyDownloadLink = id => {
   let tempInput = document.createElement("input");
-  tempInput.value = `https://dogefiles-next.vercel.app/download/${key}`;
+  tempInput.value = `https://dogefiles.io/d/${id}`;
   document.body.appendChild(tempInput);
   tempInput.select();
   document.execCommand("copy");
@@ -32,6 +33,8 @@ export default function FilesTable({ files }) {
   const dispatch = useDispatch();
   const toast = useToast();
   const [privacyBtnLoading, setPrivacyBtnLoading] = useState(false);
+  const tableBodyColor = useColorModeValue("gray.600", "gray.400");
+  const tableBtnColor = useColorModeValue("gray.600", "gray.300");
 
   const deleteFileS3 = async key => {
     await deleteFile(key, currentUser.uid);
@@ -60,7 +63,7 @@ export default function FilesTable({ files }) {
               <Th isNumeric>Downloads</Th>
             </Tr>
           </Thead>
-          <Tbody color="gray.600">
+          <Tbody color={tableBodyColor}>
             {files &&
               files.map(file => {
                 return (
@@ -76,6 +79,7 @@ export default function FilesTable({ files }) {
                       <Button
                         variant="outline"
                         border="none"
+                        color={tableBtnColor}
                         isLoading={privacyBtnLoading}
                         onClick={() => {
                           setPrivacyBtnLoading(true);
@@ -97,6 +101,7 @@ export default function FilesTable({ files }) {
                         <Button
                           variant="outline"
                           border="none"
+                          color={tableBtnColor}
                           onClick={() => {
                             toast({
                               title: "Copied",
@@ -106,7 +111,7 @@ export default function FilesTable({ files }) {
                               duration: 2000,
                               isClosable: true,
                             });
-                            copyDownloadLink(file.key);
+                            copyDownloadLink(file._id);
                           }}
                         >
                           <FiShare2 />
@@ -116,6 +121,7 @@ export default function FilesTable({ files }) {
                         <Button
                           variant="outline"
                           border="none"
+                          color={tableBtnColor}
                           onClick={() => {
                             const request = window.confirm(
                               "Are you sure you want to delete the file ?"
