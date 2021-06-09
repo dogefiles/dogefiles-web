@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect, Switch } from "react-router-dom";
 import PrivateRoute from "Components/PrivateRoute";
-import { Flex, useBreakpointValue, useColorModeValue } from "@chakra-ui/react";
+import { Flex, useBreakpointValue } from "@chakra-ui/react";
 import { Header, Navbar, UploadsManager } from "Components/Layout";
 import { Cloud, Folder } from "Pages/Cloud";
 import { Bin } from "Pages/Bin";
@@ -17,7 +17,7 @@ export default function MainNavigator() {
   const variants = useBreakpointValue({ base: smVariant, md: mdVariant });
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
-  const borderRightColor = useColorModeValue("gray.200", "gray.600");
+  // const borderRightColor = useColorModeValue("gray.200", "gray.600");
 
   return (
     // es flex ki height 100vh and overflow bhot important thi
@@ -35,8 +35,8 @@ export default function MainNavigator() {
         <Flex>
           <Flex
             flexDirection="column"
-            borderRight="1px"
-            borderColor={borderRightColor}
+            // borderRight="1px"
+            // borderColor={borderRightColor}
             overflowY="auto"
             css={{
               "&::-webkit-scrollbar": {

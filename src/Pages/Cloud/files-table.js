@@ -35,6 +35,7 @@ export default function FilesTable({ files }) {
   const [privacyBtnLoading, setPrivacyBtnLoading] = useState(false);
   const tableBodyColor = useColorModeValue("gray.600", "gray.400");
   const tableBtnColor = useColorModeValue("gray.600", "gray.300");
+  const tableBorderColor = useColorModeValue("gray.200", "gray.600");
 
   const deleteFileS3 = async key => {
     await deleteFile(key, currentUser.uid);
@@ -63,7 +64,13 @@ export default function FilesTable({ files }) {
               <Th isNumeric>Downloads</Th>
             </Tr>
           </Thead>
-          <Tbody color={tableBodyColor}>
+          <Tbody
+            color={tableBodyColor}
+            borderLeft="1px"
+            borderRight="1px"
+            borderBottom="1px"
+            borderColor={tableBorderColor}
+          >
             {files &&
               files.map(file => {
                 return (
@@ -94,7 +101,11 @@ export default function FilesTable({ files }) {
                       </Button>
                     </Td>
                     <Td>{new Date(file.createdAt).toLocaleString()}</Td>
-                    <Td isNumeric>{file.downloads}</Td>
+                    <Td isNumeric>
+                      {file.downloads && file.downloads.length > 0
+                        ? file.downloads.length
+                        : 0}
+                    </Td>
                     <Td>
                       <Flex justifyContent="space-between" alignItems="center">
                         {/* Copy download link */}
