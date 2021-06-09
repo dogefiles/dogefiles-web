@@ -43,7 +43,8 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
         {showSidebarButton && (
           <IconButton
             icon={<FiMenu w={8} h={8} />}
-            colorScheme="blackAlpha"
+            border="none"
+            _focus={{ border: "none" }}
             variant="outline"
             onClick={onShowSidebar}
           />
