@@ -1,4 +1,4 @@
-import { Text, VStack } from "@chakra-ui/layout";
+import { Flex, Text, VStack } from "@chakra-ui/layout";
 import { Skeleton } from "@chakra-ui/react";
 
 import { useAuth } from "Utils/AuthContext";
@@ -7,6 +7,7 @@ import { listUploads } from "APIs/s3";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FilesTable from "./files-table";
+import LineChart from "Components/LineChart";
 
 export default function Cloud() {
   const { currentUser } = useAuth();
@@ -37,8 +38,28 @@ export default function Cloud() {
         endColor="gray.200"
       >
         <VStack align="left">
+          <LineChart />
           <Text color="gray.400">Recents</Text>
-          {!isLoading && <FilesTable files={data} />}
+          <Flex
+            overflowX="auto"
+            overflowY="auto"
+            css={{
+              "&::-webkit-scrollbar": {
+                width: "2px",
+                height: "4px",
+              },
+              "&::-webkit-scrollbar-track": {
+                width: "2px",
+                height: "4px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: "pink",
+                borderRadius: "24px",
+              },
+            }}
+          >
+            {!isLoading && <FilesTable files={data} />}
+          </Flex>
         </VStack>
       </Skeleton>
     </>

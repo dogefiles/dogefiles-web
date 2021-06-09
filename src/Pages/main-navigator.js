@@ -5,7 +5,6 @@ import { Flex, useBreakpointValue } from "@chakra-ui/react";
 import { Header, Navbar, UploadsManager } from "Components/Layout";
 import { Cloud, Folder } from "Pages/Cloud";
 import { Bin } from "Pages/Bin";
-import Upload from "Components/Upload";
 import { Settings } from "Pages/Settings";
 import { Earnings } from "Pages/Earnings";
 
@@ -31,7 +30,12 @@ export default function MainNavigator() {
         showSidebarButton={variants?.navigationButton}
         onShowSidebar={toggleSidebar}
       />
-      <Flex margin="0" padding="0" height="100%">
+      <Flex
+        margin="0"
+        padding="0"
+        height="100%"
+        paddingBottom={["auto", "4rem", "4rem", "4rem"]} //Very Important Line of this whole page layout
+      >
         <Flex>
           <Flex
             flexDirection="column"
@@ -91,18 +95,14 @@ export default function MainNavigator() {
               component={Folder}
             ></PrivateRoute>
 
-            <PrivateRoute
-              exact
-              path="/upload"
-              component={Upload}
-            ></PrivateRoute>
-
             <PrivateRoute path="/earnings" component={Earnings}></PrivateRoute>
             <PrivateRoute path="/bin" component={Bin}></PrivateRoute>
 
             <PrivateRoute path="/settings" component={Settings}></PrivateRoute>
           </Switch>
-
+          {/* <div>Hello</div>
+          <div>last</div> */}
+          {/* These sample divs above are for testing layout Y-axis overflow */}
           {/* Uploads Manager */}
           <UploadsManager />
         </Flex>

@@ -68,6 +68,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
             />
           </InputGroup>
         )}
+        <ThemeToggle />
         <Menu>
           <MenuButton>
             <Wrap>
@@ -102,7 +103,6 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
             </MenuItem>
           </MenuList>
         </Menu>
-        <ThemeToggle />
       </HStack>
     </HStack>
   );
