@@ -53,14 +53,18 @@ export default function FilesTable({ files }) {
   return (
     <>
       {files && (
-        <Table variant="simple" boxShadow="md" width="99%">
+        <Table
+          variant="simple"
+          boxShadow="md"
+          // width={["50%", "50%", "90%", "99%"]}
+        >
           <Thead boxShadow="md">
             <Tr>
-              <Th>Name</Th>
+              <Th isTruncated>Name</Th>
               {/* <Th>Type</Th> */}
               <Th>Size</Th>
               <Th>Privacy</Th>
-              <Th>Last Modified</Th>
+              <Th isTruncated>Last Modified</Th>
               <Th isNumeric>Downloads</Th>
             </Tr>
           </Thead>
@@ -76,7 +80,7 @@ export default function FilesTable({ files }) {
                 return (
                   <Tr key={file.key} onContextMenu={() => alert("Right Click")}>
                     <Td>
-                      <Flex alignItems="center">
+                      <Flex alignItems="center" isTruncated>
                         <TypeIdentifider fileType={file.fileType} />
                         <Text mx={1}>{file.fileName}</Text>
                       </Flex>
@@ -100,7 +104,9 @@ export default function FilesTable({ files }) {
                         {file.privacy === "private" ? <FiEyeOff /> : <FiEye />}
                       </Button>
                     </Td>
-                    <Td>{new Date(file.createdAt).toLocaleString()}</Td>
+                    <Td isTruncated>
+                      {new Date(file.createdAt).toLocaleString()}
+                    </Td>
                     <Td isNumeric>
                       {file.downloads && file.downloads.length > 0
                         ? file.downloads.length
