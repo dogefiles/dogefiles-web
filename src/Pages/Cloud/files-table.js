@@ -42,7 +42,7 @@ export default function FilesTable({ files }) {
     dispatch(() => dispatch({ type: "cloud" }));
   };
 
-  console.log(files);
+  console.log(files, "from files table file");
 
   const updatePrivacyS3 = async (firebaseId, key, privacy) => {
     await updatePrivacy(firebaseId, key, privacy);

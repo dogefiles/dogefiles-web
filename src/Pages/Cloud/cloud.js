@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FilesTable from "./files-table";
 import LineChart from "Components/LineChart";
+import UploadsChart from "Components/UploadsChart";
 
 export default function Cloud() {
   const { currentUser } = useAuth();
@@ -30,6 +31,12 @@ export default function Cloud() {
     dispatch(() => dispatch({ type: "toggle" }));
   }, [fetchValue, dispatch, refetch]);
 
+  //Extract downloads from the data and give it to charts
+  // let downloads = null;
+  // if (data) {
+  //   downloads = data.map(d => d.downloads);
+  // }
+
   return (
     <>
       <Helmet>
@@ -45,7 +52,13 @@ export default function Cloud() {
         endColor="gray.200"
       >
         <VStack align="left">
-          <LineChart />
+          <Flex
+            flexDirection={["column", "column", "column", "row"]}
+            justifyContent="space-between"
+          >
+            {!isLoading && <LineChart />}
+            {!isLoading && <UploadsChart data={data} />}
+          </Flex>
           <Text color="gray.400">Recents</Text>
           <Flex
             overflowX="auto"
