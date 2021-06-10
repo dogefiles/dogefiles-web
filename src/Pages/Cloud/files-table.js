@@ -53,7 +53,7 @@ export default function FilesTable({ files }) {
   return (
     <>
       {files && (
-        <Table variant="simple" boxShadow="md">
+        <Table variant="simple" boxShadow="md" width="99%">
           <Thead boxShadow="md">
             <Tr>
               <Th>Name</Th>

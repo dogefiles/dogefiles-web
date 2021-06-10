@@ -35,6 +35,7 @@ export default function Cloud() {
       <Helmet>
         <meta charSet="utf-8" />
         <title>Cloud - Dogefiles</title>
+        <meta content="Cloud - Dogefiles" property="og:title" />
         <link rel="canonical" href="https://app.dogefiles.io/cloud" />
       </Helmet>
       <Skeleton
