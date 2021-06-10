@@ -34,7 +34,7 @@ export default function MainNavigator() {
         margin="0"
         padding="0"
         height="100%"
-        paddingBottom={["auto", "4rem", "4rem", "4rem"]} //Very Important Line of this whole page layout
+        paddingBottom={"4rem"} //Very Important Line of this whole page layout
       >
         <Flex>
           <Flex

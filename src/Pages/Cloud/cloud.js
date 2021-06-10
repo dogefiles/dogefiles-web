@@ -16,19 +16,15 @@ export default function Cloud() {
   const dispatch = useDispatch();
   const { fetchValue } = useSelector(state => state.refetchR);
 
-  const { isLoading, data, refetch } = useQuery(
-    "listUploads",
-    () => listUploads(currentUser.uid),
-    {
-      cacheTime: 1,
-    }
+  const { isLoading, data, refetch } = useQuery("listUploads", () =>
+    listUploads(currentUser.uid)
   );
 
   useEffect(() => {
     if (fetchValue !== "cloud") return;
 
     refetch();
-    dispatch(() => dispatch({ type: "toggle" }));
+    dispatch(() => dispatch({ type: "toggle" })); //this toggle will clean the last state it helps in automatic refreshing
   }, [fetchValue, dispatch, refetch]);
 
   //Extract downloads from the data and give it to charts
