@@ -3,7 +3,7 @@ import {
   VStack,
   Box,
   Divider,
-  Heading,
+  // Heading,
   Tooltip,
   Link,
   Drawer,
@@ -14,6 +14,8 @@ import {
   DrawerContent,
   Image,
   useColorModeValue,
+  Tag,
+  TagLabel,
 } from "@chakra-ui/react";
 import {
   FiCloud,
@@ -24,6 +26,7 @@ import {
 } from "react-icons/fi";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import NewButton from "./NewButton";
+import Storage from "./Storage";
 
 const NavLinks = ({ Icon, Title, onClick }) => {
   const { pathname } = useLocation();
@@ -64,9 +67,11 @@ const Nav = () => {
   return (
     <>
       <Box py="2">
-        <Heading as="h3" size="md" my="2" color="primary.500">
-          Pro User
-        </Heading>
+        <Box mt={2} mb={4}>
+          <Tag size="lg" variant="outline" colorScheme="green">
+            <TagLabel>Free user</TagLabel>
+          </Tag>
+        </Box>
         <NewButton />
       </Box>
 
@@ -76,6 +81,9 @@ const Nav = () => {
       {/* <NavLinks Icon={FiTrash2} Title="Bin" /> */}
       <NavLinks Icon={FiDollarSign} Title="Earnings" />
       <NavLinks Icon={FiSettings} Title="Settings" />
+
+      {/* Storage  */}
+      <Storage />
     </>
   );
 };
