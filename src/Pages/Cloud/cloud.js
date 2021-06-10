@@ -1,5 +1,6 @@
 import { Flex, Text, VStack } from "@chakra-ui/layout";
 import { Skeleton } from "@chakra-ui/react";
+import { Helmet } from "react-helmet";
 
 import { useAuth } from "Utils/AuthContext";
 import { useQuery } from "react-query";
@@ -31,6 +32,11 @@ export default function Cloud() {
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Cloud - Dogefiles</title>
+        <link rel="canonical" href="https://app.dogefiles.io/cloud" />
+      </Helmet>
       <Skeleton
         // isLoaded={files.length !== 0}
         isLoaded={!isLoading}

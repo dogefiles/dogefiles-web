@@ -1,5 +1,15 @@
 import { Heading } from "@chakra-ui/react";
+import { Helmet } from "react-helmet";
 
 export default function Earnings() {
-  return <Heading>Comming Soon</Heading>;
+  return (
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Earnings - Dogefiles</title>
+        <link rel="canonical" href="https://app.dogefiles.io/earnings" />
+      </Helmet>
+      <Heading>Comming Soon</Heading>
+    </>
+  );
 }
