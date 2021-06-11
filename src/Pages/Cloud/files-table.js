@@ -15,7 +15,7 @@ import { deleteFile, updatePrivacy } from "APIs/s3";
 import { useAuth } from "Utils/AuthContext";
 import { useDispatch } from "react-redux";
 import { FiDelete, FiEye, FiEyeOff, FiShare2 } from "react-icons/fi";
-import TypeIdentifider from "Components/TypeIdentifier";
+import { TypeIdentifier } from "Components/Others";
 import { useState } from "react";
 
 const copyDownloadLink = id => {
@@ -81,7 +81,7 @@ export default function FilesTable({ files }) {
                   <Tr key={file.key} onContextMenu={() => alert("Right Click")}>
                     <Td>
                       <Flex alignItems="center" isTruncated>
-                        <TypeIdentifider fileType={file.fileType} />
+                        <TypeIdentifier fileType={file.fileType} />
                         <Text mx={1}>{file.fileName}</Text>
                       </Flex>
                     </Td>

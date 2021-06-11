@@ -24,7 +24,7 @@ import { useSelector } from "react-redux";
 
 import { presignedUrl, saveFileToDB } from "APIs/s3";
 import { FiX } from "react-icons/fi";
-import TypeIdentifier from "./TypeIdentifier";
+import { TypeIdentifier } from "Components/Others";
 import { useDispatch } from "react-redux";
 
 const getPresignedUrl = async (fileInfo, config) => {

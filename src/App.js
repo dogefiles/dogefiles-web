@@ -2,7 +2,7 @@ import React from "react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { AuthProvider } from "Utils/AuthContext";
 import { Switch, Route } from "react-router-dom";
-import PrivateRoute from "Components/PrivateRoute";
+import { PrivateRoute } from "Components/Others";
 import AllPages from "Pages";
 import { SignIn, SignUp, ForgotPassword } from "Pages/Auth";
 import Theme from "Theme";

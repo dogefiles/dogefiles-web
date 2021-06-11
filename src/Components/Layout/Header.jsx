@@ -22,7 +22,7 @@ import {
 import { FiLogOut, FiSettings, FiMenu, FiSearch } from "react-icons/fi";
 import { useAuth } from "Utils/AuthContext";
 import { useLocation } from "react-router-dom";
-import ThemeToggle from "Components/ThemeToggle";
+import ThemeToggle from "./ThemeToggle";
 import { useQueryClient } from "react-query";
 import { useDispatch } from "react-redux";
 
