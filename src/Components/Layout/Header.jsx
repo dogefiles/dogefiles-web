@@ -1,10 +1,6 @@
 import {
   // Layout
   HStack,
-  // Input
-  InputGroup,
-  Input,
-  InputRightElement,
   // Wrap
   Wrap,
   WrapItem,
@@ -19,17 +15,18 @@ import {
   IconButton,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { FiLogOut, FiSettings, FiMenu, FiSearch } from "react-icons/fi";
+import { FiLogOut, FiSettings, FiMenu } from "react-icons/fi";
 import { useAuth } from "Utils/AuthContext";
 import { useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 import { useQueryClient } from "react-query";
 import { useDispatch } from "react-redux";
+import HeaderSearch from "./Header.Search";
 
 const Header = ({ showSidebarButton, onShowSidebar }) => {
   const { logout } = useAuth();
   const { pathname } = useLocation();
-  const inputBg = useColorModeValue("white", "gray.800");
+
   const borderBottomColor = useColorModeValue("gray.200", "gray.600");
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
@@ -55,6 +52,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
           />
         )}
         <Image
+          display={["none", "none", "block", "block"]}
           padding="2"
           src="https://avatars.githubusercontent.com/u/83980120?s=200&v=4"
           alt="Logo"
@@ -64,16 +62,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
       </HStack>
 
       <HStack flex={pathname === "/cloud" && 1}>
-        {pathname === "/cloud" && (
-          <InputGroup>
-            <Input placeholder="Search in Cloud" bg={inputBg} />
-            <InputRightElement
-              children={<FiSearch />}
-              onClick={() => alert("Search")}
-              color="primary.500"
-            />
-          </InputGroup>
-        )}
+        {pathname === "/cloud" && <HeaderSearch />}
         <ThemeToggle />
         <Menu>
           <MenuButton>
