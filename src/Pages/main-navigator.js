@@ -4,7 +4,7 @@ import { PrivateRoute } from "Components/Others";
 import { Flex, useBreakpointValue } from "@chakra-ui/react";
 import { Header, Navbar } from "Components/Layout";
 import { UploadsManager } from "Components/S3";
-import { Cloud, Folder } from "Pages/Cloud";
+import { Cloud, Search } from "Pages/Cloud";
 import { Bin } from "Pages/Bin";
 import { Settings } from "Pages/Settings";
 import { Earnings } from "Pages/Earnings";
@@ -92,8 +92,8 @@ export default function MainNavigator() {
             <PrivateRoute exact path="/cloud" component={Cloud}></PrivateRoute>
             <PrivateRoute
               exact
-              path="/cloud/:folder"
-              component={Folder}
+              path="/cloud/:search"
+              component={Search}
             ></PrivateRoute>
 
             <PrivateRoute path="/earnings" component={Earnings}></PrivateRoute>

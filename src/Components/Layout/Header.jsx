@@ -62,7 +62,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
       </HStack>
 
       <HStack flex={pathname === "/cloud" && 1}>
-        {pathname === "/cloud" && <HeaderSearch />}
+        {pathname.includes("/cloud") && <HeaderSearch />}
         <ThemeToggle />
         <Menu>
           <MenuButton>
