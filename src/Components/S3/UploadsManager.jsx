@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FiUploadCloud, FiPlus } from "react-icons/fi";
-import CreateUploads from "Components/CreateUploads";
+import CreateUploads from "Components/S3/CreateUploads";
 
 export default function Manager() {
   const [toggle, setToggle] = useState(true);

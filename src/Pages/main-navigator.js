@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Redirect, Switch } from "react-router-dom";
-import PrivateRoute from "Components/PrivateRoute";
+import { PrivateRoute } from "Components/Others";
 import { Flex, useBreakpointValue } from "@chakra-ui/react";
-import { Header, Navbar, UploadsManager } from "Components/Layout";
+import { Header, Navbar } from "Components/Layout";
+import { UploadsManager } from "Components/S3";
 import { Cloud, Folder } from "Pages/Cloud";
 import { Bin } from "Pages/Bin";
 import { Settings } from "Pages/Settings";

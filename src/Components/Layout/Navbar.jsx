@@ -25,8 +25,8 @@ import {
   FiDollarSign,
 } from "react-icons/fi";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import NewButton from "./NewButton";
-import Storage from "./Storage";
+import NewButton from "./Navbar.NewButton";
+import Storage from "./Navbar.Storage";
 
 const NavLinks = ({ Icon, Title, onClick }) => {
   const { pathname } = useLocation();
