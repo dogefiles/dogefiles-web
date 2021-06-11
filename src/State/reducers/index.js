@@ -9,4 +9,14 @@ const reducers = combineReducers({
   refetchR: refetchReducer,
 });
 
-export default reducers;
+const rootReducer = (state, action) => {
+  switch (action.type) {
+    case "USER_LOGOUT":
+      return reducers(undefined, action);
+    default:
+      return reducers(state, action);
+  }
+};
+
+// export default reducers;
+export default rootReducer;

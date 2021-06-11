@@ -46,7 +46,7 @@ export default function Storage() {
   return (
     <>
       {isLoading ? (
-        <div>Loading</div>
+        <></>
       ) : (
         <>
           <Heading fontSize="1.6rem" p="2" color={headingColor}>

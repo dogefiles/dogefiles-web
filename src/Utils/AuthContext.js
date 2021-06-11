@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "Utils/firebase";
 import firebase from "firebase";
+// import { useDispatch } from "react-redux";
 
 const AuthContext = React.createContext();
 
@@ -11,6 +12,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
+  // const dispatch = useDispatch();
 
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
@@ -21,6 +23,7 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
+    // dispatch(() => dispatch({ type: "USER_LOGOUT" }));
     return auth.signOut();
   }
 
