@@ -18,12 +18,14 @@ import { useSelector, useDispatch } from "react-redux";
 export default function Storage() {
   const storageBg = useColorModeValue("white", "gray.700");
   const headingColor = useColorModeValue("primary.500", "primary.400");
+  // const queryClient = useQueryClient();
+  // console.log(queryClient.getQueryData("listUploads"), "from cache");
 
   const { currentUser } = useAuth();
   const dispatch = useDispatch();
   const { fetchValue } = useSelector(state => state.refetchR);
 
-  const { isLoading, data, refetch } = useQuery("listUploads", () =>
+  const { data, refetch } = useQuery("listUploads", () =>
     listUploads(currentUser.uid)
   );
 
@@ -45,36 +47,30 @@ export default function Storage() {
 
   return (
     <>
-      {isLoading ? (
-        <></>
-      ) : (
-        <>
-          <Heading fontSize="1.6rem" p="2" color={headingColor}>
-            Storage
-          </Heading>
-          <Flex bg={storageBg} borderRadius="6px" p="2" alignItems="center">
-            <Box>
-              <CircularProgress
-                value={totalSize}
-                color="primary.400"
-                size="100px"
-              >
-                <CircularProgressLabel>
-                  {percentage.toFixed(2)}%
-                </CircularProgressLabel>
-              </CircularProgress>
-            </Box>
-            <VStack>
-              <Tag size="md" colorScheme="blue">
-                <TagLabel>10 GB Left</TagLabel>
-              </Tag>
-              <Tag size="md" color="primary.400">
-                <TagLabel>{totalSize.toFixed(2)} GB Used</TagLabel>
-              </Tag>
-            </VStack>
-          </Flex>
-        </>
-      )}
+      <Heading fontSize="1.6rem" p="2" color={headingColor}>
+        Storage
+      </Heading>
+      <Flex bg={storageBg} borderRadius="6px" p="2" alignItems="center">
+        <Box>
+          <CircularProgress
+            value={totalSize ? totalSize : 0}
+            color="primary.400"
+            size="100px"
+          >
+            <CircularProgressLabel>
+              {percentage ? percentage.toFixed(2) : 0}%
+            </CircularProgressLabel>
+          </CircularProgress>
+        </Box>
+        <VStack>
+          <Tag size="md" colorScheme="blue">
+            <TagLabel>10 GB Left</TagLabel>
+          </Tag>
+          <Tag size="md" color="primary.400">
+            <TagLabel>{totalSize ? totalSize.toFixed(2) : 0} GB Used</TagLabel>
+          </Tag>
+        </VStack>
+      </Flex>
     </>
   );
 }

@@ -100,6 +100,7 @@ import UploadsChart from "Components/UploadsChart";
 export default function Cloud() {
   const { currentUser } = useAuth();
   const dispatch = useDispatch();
+
   const { fetchValue } = useSelector(state => state.refetchR);
 
   const { isLoading, data, refetch } = useQuery("listUploads", () =>
@@ -118,7 +119,6 @@ export default function Cloud() {
   // if (data) {
   //   downloads = data.map(d => d.downloads);
   // }
-
   return (
     <>
       <Helmet>

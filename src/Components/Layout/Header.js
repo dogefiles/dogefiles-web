@@ -23,12 +23,17 @@ import { FiLogOut, FiSettings, FiMenu, FiSearch } from "react-icons/fi";
 import { useAuth } from "Utils/AuthContext";
 import { useLocation } from "react-router-dom";
 import ThemeToggle from "Components/ThemeToggle";
+import { useQueryClient } from "react-query";
+import { useDispatch } from "react-redux";
 
 const Header = ({ showSidebarButton, onShowSidebar }) => {
   const { logout } = useAuth();
   const { pathname } = useLocation();
   const inputBg = useColorModeValue("white", "gray.800");
   const borderBottomColor = useColorModeValue("gray.200", "gray.600");
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+
   return (
     // <HStack width="100%" paddingX="1" height="14">
     <HStack
@@ -93,7 +98,14 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
               />
               <span>Settings</span>
             </MenuItem>
-            <MenuItem minH="40px" onClick={logout}>
+            <MenuItem
+              minH="40px"
+              onClick={() => {
+                queryClient.clear(); //remove all caches
+                dispatch(() => dispatch({ type: "USER_LOGOUT" })); //reset redux
+                logout();
+              }}
+            >
               <Icon
                 as={FiLogOut}
                 color="primary.500"
