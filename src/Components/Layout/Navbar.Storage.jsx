@@ -13,28 +13,20 @@ import { useAuth } from "Utils/AuthContext";
 import { useQuery } from "react-query";
 import { listUploads } from "APIs/s3";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 
 export default function Storage() {
   const storageBg = useColorModeValue("white", "gray.700");
   const headingColor = useColorModeValue("primary.500", "primary.400");
-  // const queryClient = useQueryClient();
-  // console.log(queryClient.getQueryData("listUploads"), "from cache");
 
   const { currentUser } = useAuth();
-  const dispatch = useDispatch();
-  const { fetchValue } = useSelector(state => state.refetchR);
 
   const { data, refetch } = useQuery("listUploads", () =>
     listUploads(currentUser.uid)
   );
 
   useEffect(() => {
-    if (fetchValue !== "cloud") return;
-
     refetch();
-    dispatch(() => dispatch({ type: "toggle" })); //this toggle will clean the last state it helps in automatic refreshing
-  }, [fetchValue, dispatch, refetch]);
+  }, [data, refetch]);
 
   let totalSize = 0;
   let percentage = 0;

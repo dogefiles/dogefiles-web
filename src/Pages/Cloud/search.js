@@ -1,17 +1,28 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import FilesTable from "./files-table";
-import { Text } from "@chakra-ui/layout";
+import { Text, Link } from "@chakra-ui/react";
+import { FiArrowLeft } from "react-icons/fi";
+import { Link as ReactLink } from "react-router-dom";
+import { useAuth } from "Utils/AuthContext";
+import { listUploads } from "APIs/s3";
 
 export default function Folder() {
   const { search } = useParams();
+  const { currentUser } = useAuth();
   const [fileNames, setFileNames] = useState([]);
-  const useQuery = useQueryClient();
 
-  const data = useQuery.getQueryData("listUploads");
+  const { data, refetch } = useQuery("listUploads", () =>
+    listUploads(currentUser.uid)
+  );
 
   useEffect(() => {
+    refetch();
+  }, [data, refetch]);
+
+  useEffect(() => {
+    if (!data) return;
     const getFileNames = data.filter(file =>
       file.fileName.toLowerCase().includes(search.toLowerCase())
     );
@@ -20,7 +31,10 @@ export default function Folder() {
 
   return (
     <>
-      {fileNames.length === 0 ? (
+      <Link display={["block", "block", "none", "none"]} as={ReactLink} to="/">
+        <FiArrowLeft />
+      </Link>
+      {!data || fileNames.length === 0 ? (
         <Text>Nothing found</Text>
       ) : (
         <FilesTable files={fileNames} />
