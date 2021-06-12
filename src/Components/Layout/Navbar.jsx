@@ -5,7 +5,6 @@ import {
   Divider,
   // Heading,
   Tooltip,
-  Link,
   Drawer,
   DrawerOverlay,
   DrawerCloseButton,
@@ -24,7 +23,7 @@ import {
   // FiUploadCloud,
   FiDollarSign,
 } from "react-icons/fi";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as ReactLink, useLocation } from "react-router-dom";
 import NewButton from "./Navbar.NewButton";
 import Storage from "./Navbar.Storage";
 
@@ -32,7 +31,7 @@ const NavLinks = ({ Icon, Title, onClick }) => {
   const { pathname } = useLocation();
   const navBtnColor = useColorModeValue("gray.600", "gray.400");
   return (
-    <Link as={RouterLink} to={`/${Title.toLowerCase()}`}>
+    <ReactLink to={`/${Title.toLowerCase()}`}>
       <Tooltip
         hasArrow
         label={Title}
@@ -59,7 +58,7 @@ const NavLinks = ({ Icon, Title, onClick }) => {
           {Title}
         </Button>
       </Tooltip>
-    </Link>
+    </ReactLink>
   );
 };
 
@@ -100,10 +99,11 @@ export default function Navbar({ isOpen, variant, onClose }) {
           <DrawerCloseButton />
           <DrawerHeader color="primary.500" fontSize="4xl">
             <Image
-              src="https://avatars.githubusercontent.com/u/83980120?s=200&v=4"
+              // src="https://avatars.githubusercontent.com/u/83980120?s=200&v=4"
+              src="/dogefiles_logo.png"
               alt="Logo"
               objectFit="cover"
-              width="50%"
+              width="80%"
             />
           </DrawerHeader>
           <DrawerBody>

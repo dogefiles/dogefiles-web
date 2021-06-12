@@ -33,7 +33,7 @@ export default function FilesTable({ files }) {
   const dispatch = useDispatch();
   const toast = useToast();
   const [privacyBtnLoading, setPrivacyBtnLoading] = useState(false);
-  const tableBodyColor = useColorModeValue("gray.600", "gray.400");
+  const tableBodyColor = useColorModeValue("gray.700", "gray.400");
   const tableBtnColor = useColorModeValue("gray.600", "gray.300");
   const tableBorderColor = useColorModeValue("gray.200", "gray.600");
 
@@ -42,7 +42,7 @@ export default function FilesTable({ files }) {
     dispatch(() => dispatch({ type: "cloud" }));
   };
 
-  console.log(files, "from files table file");
+  //console.log(files, "from files table file");
 
   const updatePrivacyS3 = async (firebaseId, key, privacy) => {
     await updatePrivacy(firebaseId, key, privacy);

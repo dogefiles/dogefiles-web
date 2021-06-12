@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import FilesTable from "./files-table";
-import { Text, Link } from "@chakra-ui/react";
+import { Text, Link, Flex } from "@chakra-ui/react";
 import { FiArrowLeft } from "react-icons/fi";
 import { Link as ReactLink } from "react-router-dom";
 import { useAuth } from "Utils/AuthContext";
@@ -37,7 +37,26 @@ export default function Folder() {
       {!data || fileNames.length === 0 ? (
         <Text>Nothing found</Text>
       ) : (
-        <FilesTable files={fileNames} />
+        <Flex
+          overflowX="auto"
+          overflowY="auto"
+          css={{
+            "&::-webkit-scrollbar": {
+              width: "2px",
+              height: "4px",
+            },
+            "&::-webkit-scrollbar-track": {
+              width: "2px",
+              height: "4px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              background: "pink",
+              borderRadius: "24px",
+            },
+          }}
+        >
+          <FilesTable files={fileNames} />
+        </Flex>
       )}
     </>
   );

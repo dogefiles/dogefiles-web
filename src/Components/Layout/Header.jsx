@@ -36,6 +36,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
     <HStack
       width="100%"
       paddingX="1"
+      py="1"
       height="14"
       borderBottom="1px"
       borderColor={borderBottomColor}
@@ -53,11 +54,13 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
         )}
         <Image
           display={["none", "none", "block", "block"]}
-          padding="2"
-          src="https://avatars.githubusercontent.com/u/83980120?s=200&v=4"
+          // padding="2"
+          // src="https://avatars.githubusercontent.com/u/83980120?s=200&v=4"
+          src="/dogefiles_logo.png"
           alt="Logo"
           objectFit="cover"
-          width="4.5rem"
+          // width="4.5rem"
+          width="10rem"
         />
       </HStack>
 

@@ -18,6 +18,7 @@ import {
   PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useAuth } from "Utils/AuthContext";
 import { useSelector } from "react-redux";
@@ -33,6 +34,8 @@ const getPresignedUrl = async (fileInfo, config) => {
 };
 
 function PleaseUpload({ file }) {
+  const uploadsBg = useColorModeValue("white", "gray.800");
+  const uploadsColor = useColorModeValue("gray.700", "gray.400");
   const { getUserToken, currentUser } = useAuth();
   const [toggle, setToggle] = useState(false);
   const dispatch = useDispatch();
@@ -130,11 +133,9 @@ function PleaseUpload({ file }) {
       {uploadPercentage !== 0 && (
         <Flex
           alignItems="center"
-          borderBottom="1px"
-          borderRadius="6px"
-          px={1}
-          borderColor="primary.400"
-          mt={0.5}
+          p={1}
+          color={uploadsColor}
+          bg={uploadsBg}
           width="100%"
           justifyContent="space-between"
         >
