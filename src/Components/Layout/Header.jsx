@@ -20,10 +20,14 @@ import { useAuth } from "Utils/AuthContext";
 import { useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 import HeaderSearch from "./Header.Search";
+import { useDispatch } from "react-redux";
+import { useQueryClient } from "react-query";
 
 const Header = ({ showSidebarButton, onShowSidebar }) => {
   const { logout, currentUser } = useAuth();
   const { pathname } = useLocation();
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
 
   const borderBottomColor = useColorModeValue("gray.200", "gray.600");
 
@@ -87,7 +91,14 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
               />
               <span>Settings</span>
             </MenuItem>
-            <MenuItem minH="40px" onClick={() => logout()}>
+            <MenuItem
+              minH="40px"
+              onClick={() => {
+                queryClient.clear(); //remove all caches
+                dispatch(() => dispatch({ type: "USER_LOGOUT" })); //reset redux
+                logout();
+              }}
+            >
               <Icon
                 as={FiLogOut}
                 color="primary.500"

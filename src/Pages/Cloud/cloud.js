@@ -1,4 +1,4 @@
-import { Flex, Text, VStack } from "@chakra-ui/layout";
+import { Flex, Text, VStack, Spinner, Heading } from "@chakra-ui/react";
 import { Helmet } from "react-helmet";
 
 import { useAuth } from "Utils/AuthContext";
@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FilesTable from "./files-table";
 import { DownloadsChart, UploadsChart } from "Components/Charts";
+import FirstUploadButton from "Components/Layout/Navbar.NewButton";
 
 export default function Cloud() {
   const { currentUser } = useAuth();
@@ -15,8 +16,12 @@ export default function Cloud() {
 
   const { fetchValue } = useSelector(state => state.refetchR);
 
-  const { isLoading, data, refetch } = useQuery("listUploads", () =>
-    listUploads(currentUser.uid)
+  const { isLoading, data, refetch, isError } = useQuery(
+    "listUploads",
+    () => listUploads(currentUser.uid),
+    {
+      cacheTime: 0,
+    }
   );
 
   useEffect(() => {
@@ -31,6 +36,7 @@ export default function Cloud() {
   // if (data) {
   //   downloads = data.map(d => d.downloads);
   // }
+
   return (
     <>
       <Helmet>
@@ -40,7 +46,12 @@ export default function Cloud() {
         <link rel="canonical" href="https://app.dogefiles.io/cloud" />
       </Helmet>
       {isLoading ? (
-        <></>
+        <Spinner size="xl" />
+      ) : isError ? (
+        <VStack alignItems="center" justifyContent="center" height="100%">
+          <Heading>Your ☁ is Empty</Heading>
+          <FirstUploadButton />
+        </VStack>
       ) : (
         <VStack align="left">
           <Flex
