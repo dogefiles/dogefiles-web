@@ -28,13 +28,15 @@ export default function Storage() {
     refetch();
   }, [data, refetch]);
 
-  let totalSize = 0;
+  let spaceLeft = 20;
+  let spaceUsed = 0;
   let percentage = 0;
   if (data) {
-    data.forEach(file => (totalSize += file.fileSize));
-    totalSize = totalSize / 1e9; //GB
-    // totalSize = totalSize / 1e6; //MB
-    percentage = (totalSize / 20) * 100;
+    data.forEach(file => (spaceUsed += file.fileSize));
+    spaceUsed = spaceUsed / 1e9; //GB
+    // spaceUsed = spaceUsed / 1e6; //MB
+    percentage = (spaceUsed / 20) * 100;
+    spaceLeft = spaceLeft - spaceUsed;
   }
 
   return (
@@ -45,7 +47,7 @@ export default function Storage() {
       <Flex bg={storageBg} borderRadius="6px" p="2" alignItems="center">
         <Box>
           <CircularProgress
-            value={totalSize ? totalSize : 0}
+            value={spaceUsed ? spaceUsed : 0}
             color="primary.400"
             size="100px"
           >
@@ -56,10 +58,10 @@ export default function Storage() {
         </Box>
         <VStack>
           <Tag size="md" colorScheme="blue">
-            <TagLabel>10 GB Left</TagLabel>
+            <TagLabel>{spaceLeft.toFixed(2)} GB Left</TagLabel>
           </Tag>
           <Tag size="md" color="primary.400">
-            <TagLabel>{totalSize ? totalSize.toFixed(2) : 0} GB Used</TagLabel>
+            <TagLabel>{spaceUsed ? spaceUsed.toFixed(2) : 0} GB Used</TagLabel>
           </Tag>
         </VStack>
       </Flex>
