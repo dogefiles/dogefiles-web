@@ -79,7 +79,7 @@ function PleaseUpload({ file }) {
     };
 
     const data = {
-      bucket: "meow0007",
+      bucket: "dogefiles-main",
       ...fields,
       "Content-Type": file.type,
       file: file,

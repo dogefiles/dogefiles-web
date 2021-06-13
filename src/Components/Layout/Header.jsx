@@ -19,17 +19,13 @@ import { FiLogOut, FiSettings, FiMenu } from "react-icons/fi";
 import { useAuth } from "Utils/AuthContext";
 import { useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
-import { useQueryClient } from "react-query";
-import { useDispatch } from "react-redux";
 import HeaderSearch from "./Header.Search";
 
 const Header = ({ showSidebarButton, onShowSidebar }) => {
-  const { logout } = useAuth();
+  const { logout, currentUser } = useAuth();
   const { pathname } = useLocation();
 
   const borderBottomColor = useColorModeValue("gray.200", "gray.600");
-  const queryClient = useQueryClient();
-  const dispatch = useDispatch();
 
   return (
     // <HStack width="100%" paddingX="1" height="14">
@@ -73,7 +69,8 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
               <WrapItem>
                 <Avatar
                   name="Dogefiles"
-                  src="https://i1.sndcdn.com/avatars-000459287565-8boqnr-t500x500.jpg"
+                  // src="https://i1.sndcdn.com/avatars-000459287565-8boqnr-t500x500.jpg"
+                  src={currentUser.photoURL}
                   size="sm"
                 />
               </WrapItem>
@@ -90,14 +87,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
               />
               <span>Settings</span>
             </MenuItem>
-            <MenuItem
-              minH="40px"
-              onClick={() => {
-                queryClient.clear(); //remove all caches
-                dispatch(() => dispatch({ type: "USER_LOGOUT" })); //reset redux
-                logout();
-              }}
-            >
+            <MenuItem minH="40px" onClick={() => logout()}>
               <Icon
                 as={FiLogOut}
                 color="primary.500"

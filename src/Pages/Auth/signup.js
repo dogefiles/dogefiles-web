@@ -132,6 +132,8 @@ function SignUp({ history }) {
                   <Input
                     type="password"
                     value={password}
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                     onChange={e => setPassword(e.target.value)}
                   />
                 </FormControl>
@@ -141,6 +143,8 @@ function SignUp({ history }) {
                   <Input
                     type="password"
                     value={passwordConf}
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                     onChange={e => setPasswordConf(e.target.value)}
                   />
                 </FormControl>

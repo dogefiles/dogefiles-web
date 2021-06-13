@@ -5,6 +5,7 @@ import {
   FormLabel,
   Input,
   Avatar,
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAuth } from "Utils/AuthContext";
@@ -13,29 +14,93 @@ import uploadAvatar from "./settings.UploadAvatar";
 import { S3_AVATAR_UPLOADS_URL } from "Constants/S3";
 
 const AvatarBucketURL = S3_AVATAR_UPLOADS_URL;
+
 export default function Settings() {
-  const { currentUser, getUserToken, updatePhoto } = useAuth();
+  const toast = useToast();
+  const {
+    currentUser,
+    getUserToken,
+    updatePhoto,
+    updateName,
+    updatePassword,
+    logout,
+  } = useAuth();
+  const userAuthProvider = currentUser.providerData[0].providerId;
+  const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
+  const [newName, setNewName] = useState(currentUser.displayName);
+  const [password, setPassword] = useState("");
+  const [passwordRepeat, setPasswordRepeat] = useState("");
+
+  const changeAvatar = async userToken => {
+    let currentAvatarKey = null;
+    if (
+      currentUser.photoURL !== null &&
+      currentUser.photoURL.includes(AvatarBucketURL)
+    ) {
+      currentAvatarKey = currentUser.photoURL.slice(AvatarBucketURL.length);
+    }
+    const photoUrl = await uploadAvatar(
+      currentAvatarKey,
+      file,
+      userToken,
+      currentUser.uid
+    );
+
+    if (photoUrl) {
+      await updatePhoto(photoUrl);
+    }
+  };
+
+  const changeName = async () => {
+    await updateName(newName);
+  };
 
   const updateProfile = async e => {
     e.preventDefault();
-    let currentAvatarKey = null;
+    const userToken = await getUserToken();
+
+    //Update Image
     if (file) {
-      const userToken = await getUserToken();
-
-      if (currentUser.photoURL.includes(AvatarBucketURL)) {
-        currentAvatarKey = currentUser.photoURL.slice(AvatarBucketURL.length);
+      if (file.type.includes("image") && file.size > 1000000) {
+        return toast({
+          title: `Please upload an image less than 1 MB`,
+          status: "error",
+          isClosable: true,
+        });
+      } else if (!file.type.includes("image") || file.type.includes("gif")) {
+        return toast({
+          title: `Unsupported file type`,
+          status: "error",
+          isClosable: true,
+        });
       }
-      const photoUrl = await uploadAvatar(
-        currentAvatarKey,
-        file,
-        userToken,
-        currentUser.uid
-      );
+      setLoading(true);
+      await changeAvatar(userToken);
+      setLoading(false);
+    }
 
-      if (photoUrl) {
-        updatePhoto(photoUrl);
-      }
+    //Update Name
+    if (newName !== currentUser.displayName) {
+      setLoading(true);
+      await changeName(userToken);
+      setLoading(false);
+    }
+
+    if (password !== passwordRepeat) {
+      return toast({
+        title: `Password does not match`,
+        status: "error",
+        isClosable: true,
+      });
+    }
+
+    //Update Password
+    if (password.length >= 8 && password === passwordRepeat) {
+      setLoading(true);
+      await updatePassword(password);
+      setLoading(false);
+      logout();
     }
   };
 
@@ -59,14 +124,39 @@ export default function Settings() {
             <FormLabel>Profile Picture</FormLabel>
             <Input type="file" onChange={e => setFile(e.target.files[0])} />
             <FormLabel>Display Name</FormLabel>
-            <Input value={currentUser.displayName} />
-            <FormLabel>Email</FormLabel>
-            <Input type="email" value={currentUser.email} />
-            <FormLabel>Password</FormLabel>
-            <Input type="password" />
-            <FormLabel>Repeat Password</FormLabel>
-            <Input type="password" />
-            <Button type="submit">Update</Button>
+            <Input value={newName} onChange={e => setNewName(e.target.value)} />
+            {userAuthProvider !== "google.com" && (
+              <>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                  required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                />
+                <FormLabel>Repeat Password</FormLabel>
+                <Input
+                  type="password"
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                  required
+                  value={passwordRepeat}
+                  onChange={e => setPasswordRepeat(e.target.value)}
+                />
+              </>
+            )}
+            <Button
+              type="submit"
+              my={2}
+              bg="primary.400"
+              color="white"
+              _hover={{ bg: "primary.500" }}
+              isLoading={loading}
+            >
+              Update
+            </Button>
           </FormControl>
         </form>
       </VStack>

@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "Utils/firebase";
 import firebase from "firebase";
+import { useQueryClient } from "react-query";
+import { useDispatch } from "react-redux";
 
 const AuthContext = React.createContext();
 
@@ -12,6 +14,9 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
 
+  const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
   }
@@ -21,6 +26,8 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
+    queryClient.clear(); //remove all caches
+    dispatch(() => dispatch({ type: "USER_LOGOUT" })); //reset redux
     return auth.signOut();
   }
 

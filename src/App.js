@@ -14,16 +14,16 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <ChakraProvider theme={Theme}>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
           <Switch>
             <Route exact path="/signin" component={SignIn} />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/forgotpassword" component={ForgotPassword} />
             <PrivateRoute exact component={AllPages}></PrivateRoute>
           </Switch>
-        </QueryClientProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </ChakraProvider>
   );
 }

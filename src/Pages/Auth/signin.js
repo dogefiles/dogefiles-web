@@ -23,7 +23,7 @@ import { GoogleAuth } from "Components/Auth";
 import { Error } from "Components/Feedback";
 import { userCheck } from "APIs/auth";
 
-export default function SimpleCard({ history }) {
+export default function SimpleCard({ history, location }) {
   const toast = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -45,6 +45,10 @@ export default function SimpleCard({ history }) {
             status: "success",
             isClosable: true,
           });
+          //check if the user came wit hsome query strings
+          if (location.search.includes("settings")) {
+            return history.push("/settings");
+          }
           return history.push("/");
         })
         .catch(err => {
@@ -56,7 +60,7 @@ export default function SimpleCard({ history }) {
           return logout();
         });
     }
-  }, [currentUser, history, getUserToken, toast, logout]);
+  }, [currentUser, history, getUserToken, toast, logout, location]);
 
   const handelSignInSubmit = async e => {
     e.preventDefault();
