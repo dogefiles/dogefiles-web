@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { FiLogOut, FiSettings, FiMenu } from "react-icons/fi";
 import { useAuth } from "Utils/AuthContext";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 import HeaderSearch from "./Header.Search";
 import { useDispatch } from "react-redux";
@@ -26,6 +26,7 @@ import { useQueryClient } from "react-query";
 const Header = ({ showSidebarButton, onShowSidebar }) => {
   const { logout, currentUser } = useAuth();
   const { pathname } = useLocation();
+  const history = useHistory();
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
@@ -82,7 +83,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
           </MenuButton>
 
           <MenuList>
-            <MenuItem minH="48px" onClick={() => alert("hello")}>
+            <MenuItem minH="48px" onClick={() => history.push("/settings")}>
               <Icon
                 as={FiSettings}
                 color="primary.500"

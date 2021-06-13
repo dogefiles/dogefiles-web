@@ -45,7 +45,7 @@ export default function LineChart({ data }) {
 
   useEffect(() => {
     chart(); // eslint-disable-next-line
-  }, []);
+  }, [data]);
   return (
     <VStack
       width={["100%", "100%", "100%", "50%"]}
