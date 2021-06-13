@@ -31,11 +31,18 @@ export default function Cloud() {
     dispatch(() => dispatch({ type: "toggle" })); //this toggle will clean the last state it helps in automatic refreshing
   }, [fetchValue, dispatch, refetch]);
 
-  //Extract downloads from the data and give it to charts
-  // let downloads = null;
-  // if (data) {
-  //   downloads = data.map(d => d.downloads);
-  // }
+  // Extract downloads from the data and give it to charts
+  let downloads = null;
+  let downloadDates = [];
+  if (data) {
+    downloads = data.map(d => d.downloads); //extracted all download objects
+
+    for (let i = 0; i < downloads.length; i++) {
+      for (let j = 0; j < downloads[i].length; j++) {
+        downloadDates.push(downloads[i][j].createdAt);
+      }
+    }
+  }
 
   return (
     <>
@@ -58,7 +65,7 @@ export default function Cloud() {
             flexDirection={["column", "column", "column", "row"]}
             justifyContent="space-between"
           >
-            {data && <DownloadsChart />}
+            {data && <DownloadsChart data={downloadDates} />}
             {data !== undefined && <UploadsChart data={data} />}
           </Flex>
           <Text color="gray.400">Recents</Text>

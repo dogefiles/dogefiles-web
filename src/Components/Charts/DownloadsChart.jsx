@@ -3,19 +3,31 @@ import { Line } from "react-chartjs-2";
 import { getDaysInMonth } from "date-fns";
 import { Heading, VStack } from "@chakra-ui/react";
 
-export default function LineChart() {
+export default function LineChart({ data }) {
   const [chartData, setChartData] = useState({});
+  const downloadDates = data.map(d => new Date(d).getDate());
+
+  const numOfDaysInCurrentMonth = [
+    ...Array(getDaysInMonth(new Date()) + 1).keys(),
+  ].splice(1);
+
+  let downloadsData = [];
+
+  //Create an array with 0s with a size equal to last day of month
+  for (let i = 0; i < numOfDaysInCurrentMonth.length; i++) downloadsData[i] = 0;
+
+  //Plot the data from downloadDates to the downloadsData on equivalent date
+  for (let i = 0; i < downloadDates.length; i++)
+    downloadsData[downloadDates[i] - 1] =
+      downloadsData[downloadDates[i] - 1] + 1;
 
   const chart = () => {
     setChartData({
       labels: [...Array(getDaysInMonth(new Date()) + 1).keys()].splice(1),
       datasets: [
         {
-          label: `June Uploads`,
-          data: [
-            1, 2, 3, 15, 5, 6, 0, 23, 3, 2, 1, 33, 32, 32, 4, 32, 23, 23, 32,
-            23, 23, 22, 1, 32, 34, 33, 21, 42, 12, 33,
-          ],
+          label: `${new Date().toDateString()}`,
+          data: downloadsData,
           // Line
           borderColor: "rgb(75, 192, 192)",
           tension: 0.1,
@@ -32,7 +44,7 @@ export default function LineChart() {
   };
 
   useEffect(() => {
-    chart();
+    chart(); // eslint-disable-next-line
   }, []);
   return (
     <VStack

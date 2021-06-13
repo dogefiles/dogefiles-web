@@ -24,7 +24,7 @@ export default function LineChart({ data }) {
       labels: numOfDaysInCurrentMonth,
       datasets: [
         {
-          label: `June Uploads`,
+          label: `${new Date().toDateString()}`,
           data: uploadData,
           // Line
           borderColor: "rgb(75, 192, 192)",
