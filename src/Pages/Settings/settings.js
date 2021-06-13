@@ -9,17 +9,33 @@ import {
 import { useState } from "react";
 import { useAuth } from "Utils/AuthContext";
 import { Helmet } from "react-helmet";
+import uploadAvatar from "./settings.UploadAvatar";
+import { S3_AVATAR_UPLOADS_URL } from "Constants/S3";
 
+const AvatarBucketURL = S3_AVATAR_UPLOADS_URL;
 export default function Settings() {
-  const { currentUser, updateName } = useAuth();
-  const user = currentUser.providerData[0];
-  console.log(currentUser);
-  const [name, setName] = useState(currentUser.displayName);
+  const { currentUser, getUserToken, updatePhoto } = useAuth();
+  const [file, setFile] = useState(null);
 
-  const onSubmit = e => {
+  const updateProfile = async e => {
     e.preventDefault();
-    if (name !== null) {
-      updateName(name);
+    let currentAvatarKey = null;
+    if (file) {
+      const userToken = await getUserToken();
+
+      if (currentUser.photoURL.includes(AvatarBucketURL)) {
+        currentAvatarKey = currentUser.photoURL.slice(AvatarBucketURL.length);
+      }
+      const photoUrl = await uploadAvatar(
+        currentAvatarKey,
+        file,
+        userToken,
+        currentUser.uid
+      );
+
+      if (photoUrl) {
+        updatePhoto(photoUrl);
+      }
     }
   };
 
@@ -31,16 +47,21 @@ export default function Settings() {
         <meta content="Settings - Dogefiles" property="og:title" />
         <link rel="canonical" href="https://app.dogefiles.io/settings" />
       </Helmet>
+
       <VStack>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={updateProfile}>
           <FormControl>
-            <Avatar size="2xl" name="Segun Adebayo" src={user.photoURL} />
+            <Avatar
+              size="2xl"
+              name="Segun Adebayo"
+              src={file ? URL.createObjectURL(file) : currentUser.photoURL}
+            />
             <FormLabel>Profile Picture</FormLabel>
-            <Input type="file" />
+            <Input type="file" onChange={e => setFile(e.target.files[0])} />
             <FormLabel>Display Name</FormLabel>
-            <Input value={name} onChange={e => setName(e.value)} />
+            <Input value={currentUser.displayName} />
             <FormLabel>Email</FormLabel>
-            <Input type="email" value={user.email} />
+            <Input type="email" value={currentUser.email} />
             <FormLabel>Password</FormLabel>
             <Input type="password" />
             <FormLabel>Repeat Password</FormLabel>

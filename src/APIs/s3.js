@@ -4,13 +4,17 @@ import Axios from "Utils/Axios";
 export const presignedUrl = async (fileInfo, config) =>
   Axios.post("/S3/signedUrl", fileInfo, config);
 
+export const presignedAvatarUrl = async (fileInfo, config) =>
+  Axios.post("/S3/presignedAvatarUrl", fileInfo, config);
+
 // Save File to DB after successfull upload to Wasabi S3
 export const saveFileToDB = async preSignedFileInfo =>
   Axios.post("/S3/saveFileToDB", preSignedFileInfo);
 
 // Delete File
-export const deleteFile = async (key, firebaseId) =>
+export const deleteFile = async (bucket, key, firebaseId) =>
   Axios.post(`/S3/deleteFile`, {
+    bucket,
     key,
     firebaseId,
   });

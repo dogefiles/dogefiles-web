@@ -38,7 +38,7 @@ export default function FilesTable({ files }) {
   const tableBorderColor = useColorModeValue("gray.200", "gray.600");
 
   const deleteFileS3 = async key => {
-    await deleteFile(key, currentUser.uid);
+    await deleteFile("dogefiles-main", key, currentUser.uid);
     dispatch(() => dispatch({ type: "cloud" }));
   };
 

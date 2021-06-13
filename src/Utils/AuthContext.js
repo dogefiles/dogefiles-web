@@ -35,6 +35,12 @@ export function AuthProvider({ children }) {
     });
   }
 
+  function updatePhoto(url) {
+    return currentUser.updateProfile({
+      photoURL: url,
+    });
+  }
+
   function updateEmail(email) {
     return currentUser.updateEmail(email);
   }
@@ -72,6 +78,7 @@ export function AuthProvider({ children }) {
     logout,
     resetPassword,
     updateName,
+    updatePhoto,
     updateEmail,
     updatePassword,
     getUserToken,
