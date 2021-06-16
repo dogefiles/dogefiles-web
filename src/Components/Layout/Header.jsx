@@ -22,8 +22,6 @@ import ThemeToggle from "./ThemeToggle";
 import HeaderSearch from "./Header.Search";
 import { useDispatch } from "react-redux";
 import { useQueryClient } from "react-query";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const Header = ({ showSidebarButton, onShowSidebar }) => {
   const borderBottomColor = useColorModeValue("gray.200", "gray.600");
@@ -32,11 +30,6 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
   const history = useHistory();
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
-  const [user, setUser] = useState(currentUser);
-
-  useEffect(() => {
-    setUser(currentUser);
-  }, [currentUser]);
 
   return (
     // <HStack width="100%" paddingX="1" height="14">
@@ -81,7 +74,7 @@ const Header = ({ showSidebarButton, onShowSidebar }) => {
                 <Avatar
                   name="Dogefiles"
                   // src="https://i1.sndcdn.com/avatars-000459287565-8boqnr-t500x500.jpg"
-                  src={user.photoURL}
+                  src={currentUser.photoURL}
                   size="sm"
                 />
               </WrapItem>

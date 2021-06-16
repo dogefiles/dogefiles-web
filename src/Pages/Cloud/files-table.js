@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { FiDelete, FiEye, FiEyeOff, FiShare2 } from "react-icons/fi";
 import { TypeIdentifier } from "Components/Others";
 import { useState } from "react";
+import nameFormatter from "Utils/nameFormatter";
 
 const copyDownloadLink = id => {
   let tempInput = document.createElement("input");
@@ -60,7 +61,7 @@ export default function FilesTable({ files }) {
         >
           <Thead boxShadow="md">
             <Tr>
-              <Th isTruncated>Name</Th>
+              <Th>Name</Th>
               {/* <Th>Type</Th> */}
               <Th>Size</Th>
               <Th>Privacy</Th>
@@ -80,9 +81,9 @@ export default function FilesTable({ files }) {
                 return (
                   <Tr key={file.key} onContextMenu={() => alert("Right Click")}>
                     <Td>
-                      <Flex alignItems="center" isTruncated>
+                      <Flex alignItems="center">
                         <TypeIdentifier fileType={file.fileType} />
-                        <Text mx={1}>{file.fileName}</Text>
+                        <Text mx={1}>{nameFormatter(file.fileName)}</Text>
                       </Flex>
                     </Td>
                     <Td>{file.fileSize / 1000}Kb</Td>
