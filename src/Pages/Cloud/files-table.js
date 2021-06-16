@@ -21,7 +21,7 @@ import nameFormatter from "Utils/nameFormatter";
 
 const copyDownloadLink = id => {
   let tempInput = document.createElement("input");
-  tempInput.value = `https://dogefiles.io/d/${id}`;
+  tempInput.value = `https://dogefiles.io/download/${id}`;
   document.body.appendChild(tempInput);
   tempInput.select();
   document.execCommand("copy");
