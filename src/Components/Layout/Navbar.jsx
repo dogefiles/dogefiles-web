@@ -100,8 +100,8 @@ export default function Navbar({ isOpen, variant, onClose }) {
           <DrawerHeader color="primary.500" fontSize="4xl">
             <Image
               // src="https://avatars.githubusercontent.com/u/83980120?s=200&v=4"
-              src="/dogefiles_logo.png"
-              alt="Logo"
+              src="https://i.postimg.cc/J4LJrB0P/dogefiles-logo.png"
+              alt="Dogefiles Logo"
               objectFit="cover"
               width="80%"
             />

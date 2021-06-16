@@ -1,32 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
-import { getDaysInMonth } from "date-fns";
+// import { getDaysInMonth } from "date-fns";
 import { Heading, VStack } from "@chakra-ui/react";
+import monthIdentifier from "./monthIdentifier";
 
 export default function LineChart({ data }) {
   const [chartData, setChartData] = useState({});
   const downloadDates = data.map(d => new Date(d).getDate());
+  const monthFormatted = monthIdentifier(new Date().getMonth());
+  const currentDate = new Date().getDate();
+  const labelData = [...Array(currentDate + 1).keys()].splice(1);
 
-  const numOfDaysInCurrentMonth = [
-    ...Array(getDaysInMonth(new Date()) + 1).keys(),
-  ].splice(1);
+  // const numOfDaysInCurrentMonth = [
+  //   ...Array(getDaysInMonth(new Date()) + 1).keys(),
+  // ].splice(1);
 
   let downloadsData = [];
 
   //Create an array with 0s with a size equal to last day of month
-  for (let i = 0; i < numOfDaysInCurrentMonth.length; i++) downloadsData[i] = 0;
+  for (let i = 0; i < currentDate; i++) downloadsData[i] = 0;
 
   //Plot the data from downloadDates to the downloadsData on equivalent date
-  for (let i = 0; i < downloadDates.length; i++)
+  for (let i = 0; i < currentDate; i++)
     downloadsData[downloadDates[i] - 1] =
       downloadsData[downloadDates[i] - 1] + 1;
 
   const chart = () => {
     setChartData({
-      labels: [...Array(getDaysInMonth(new Date()) + 1).keys()].splice(1),
+      labels: labelData,
       datasets: [
         {
-          label: `${new Date().toDateString()}`,
+          label: ` ${monthFormatted} - Downloads`,
           data: downloadsData,
           // Line
           borderColor: "rgb(75, 192, 192)",
