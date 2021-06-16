@@ -2,8 +2,7 @@ import { FiFile, FiImage, FiVideo } from "react-icons/fi";
 import { AiOutlineFilePdf, AiOutlineFileZip } from "react-icons/ai";
 
 export default function TypeIdentifier({ fileType }) {
-  const extension = fileType.split("/")[1];
-  switch (extension) {
+  switch (fileType) {
     // Images
     case "jpeg":
       return <FiImage />;

@@ -33,6 +33,13 @@ const getPresignedUrl = async (fileInfo, config) => {
   return data;
 };
 
+const createExtension = fileName => {
+  const fileExtensionArr = fileName.split(".");
+  return fileExtensionArr.length === 1
+    ? "file"
+    : fileExtensionArr[fileExtensionArr.length - 1];
+};
+
 function PleaseUpload({ file }) {
   const uploadsBg = useColorModeValue("white", "gray.800");
   const uploadsColor = useColorModeValue("gray.700", "gray.400");
@@ -55,11 +62,12 @@ function PleaseUpload({ file }) {
 
   const startUpload = async file => {
     const userToken = await getUserToken();
+    const fileExtension = createExtension(file.name);
 
     const fileInfo = {
       fileName: file.name,
       fileSize: file.size,
-      fileType: file.type,
+      fileType: fileExtension,
     };
 
     const config = {
@@ -73,7 +81,7 @@ function PleaseUpload({ file }) {
     const preSignedFileInfo = {
       fileName: file.name,
       fileSize: file.size,
-      fileType: file.type,
+      fileType: fileExtension,
       key: fields.key,
       firebaseId: currentUser.uid,
     };
@@ -81,7 +89,7 @@ function PleaseUpload({ file }) {
     const data = {
       bucket: "dogefiles-main",
       ...fields,
-      "Content-Type": file.type,
+      "Content-Type": fileExtension,
       file: file,
     };
 
@@ -140,7 +148,7 @@ function PleaseUpload({ file }) {
           justifyContent="space-between"
         >
           <HStack>
-            <TypeIdentifier fileType={file.type} />
+            <TypeIdentifier fileType={createExtension(file.name)} />
             <Text>{file.name}</Text>
           </HStack>
           <HStack>
