@@ -14,10 +14,17 @@ import {
 import { deleteFile, updatePrivacy } from "APIs/s3";
 import { useAuth } from "Utils/AuthContext";
 import { useDispatch } from "react-redux";
-import { FiDelete, FiEye, FiEyeOff, FiShare2 } from "react-icons/fi";
+import {
+  FiDelete,
+  FiEye,
+  FiEyeOff,
+  FiShare2,
+  FiDownload,
+} from "react-icons/fi";
 import { TypeIdentifier } from "Components/Others";
 import { useState } from "react";
 import nameFormatter from "Utils/nameFormatter";
+import fileSizeFormatter from "Utils/fileSizeFormatter";
 
 const copyDownloadLink = id => {
   let tempInput = document.createElement("input");
@@ -50,6 +57,8 @@ export default function FilesTable({ files }) {
     setPrivacyBtnLoading(false);
     dispatch(() => dispatch({ type: "cloud" }));
   };
+
+  // files.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
     <>
@@ -86,7 +95,7 @@ export default function FilesTable({ files }) {
                         <Text mx={1}>{nameFormatter(file.fileName)}</Text>
                       </Flex>
                     </Td>
-                    <Td>{file.fileSize / 1000}Kb</Td>
+                    <Td>{fileSizeFormatter(file.fileSize)}</Td>
                     <Td>
                       <Button
                         variant="outline"
@@ -115,6 +124,16 @@ export default function FilesTable({ files }) {
                     </Td>
                     <Td>
                       <Flex justifyContent="space-between" alignItems="center">
+                        <Button
+                          variant="outline"
+                          border="none"
+                          color={tableBtnColor}
+                          onClick={() =>
+                            (window.location.href = `https://dogefiles.io/download/${file._id}`)
+                          }
+                        >
+                          <FiDownload />
+                        </Button>
                         {/* Copy download link */}
                         <Button
                           variant="outline"
