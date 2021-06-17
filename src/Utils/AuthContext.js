@@ -92,7 +92,7 @@ export function AuthProvider({ children }) {
     googleOAuth,
   };
 
-  console.log(currentUser);
+  // console.log(currentUser);
 
   return (
     <AuthContext.Provider value={value}>

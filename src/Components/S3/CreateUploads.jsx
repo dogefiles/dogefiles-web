@@ -116,7 +116,7 @@ function PleaseUpload({ file, setUploadsNotify }) {
       ),
     })
       .then(async res => {
-        console.log(res);
+        // console.log(res);
         if (res.status !== 204) {
           throw Error("Error while uploading");
         }
@@ -131,9 +131,9 @@ function PleaseUpload({ file, setUploadsNotify }) {
         dispatch(() => dispatch({ type: "cloud" }));
       })
       .catch(err => {
-        console.log(err.message);
+        // console.log(err.message);
         if (axios.isCancel(err)) {
-          console.log("Upload Cancelled", err.message);
+          // console.log("Upload Cancelled", err.message);
         }
         setUploadPercentage(0);
       });
@@ -214,7 +214,7 @@ function PleaseUpload({ file, setUploadsNotify }) {
 
 export default function CreateUploads({ setUploadsNotify }) {
   const { files } = useSelector(state => state.uploadManager);
-  console.log(files);
+  // console.log(files);
   return (
     <>
       {files.map(file =>
