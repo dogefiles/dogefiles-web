@@ -27,6 +27,7 @@ import { presignedUrl, saveFileToDB } from "APIs/s3";
 import { FiX } from "react-icons/fi";
 import { TypeIdentifier } from "Components/Others";
 import { useDispatch } from "react-redux";
+import nameFormatter from "Utils/nameFormatter";
 
 const getPresignedUrl = async (fileInfo, config) => {
   const { data } = await presignedUrl(fileInfo, config);
@@ -40,7 +41,7 @@ const createExtension = fileName => {
     : fileExtensionArr[fileExtensionArr.length - 1];
 };
 
-function PleaseUpload({ file }) {
+function PleaseUpload({ file, setUploadsNotify }) {
   const uploadsBg = useColorModeValue("white", "gray.800");
   const uploadsColor = useColorModeValue("gray.700", "gray.400");
   const { getUserToken, currentUser } = useAuth();
@@ -107,6 +108,7 @@ function PleaseUpload({ file }) {
 
         if (percent <= 100) {
           setUploadPercentage(percent);
+          setUploadsNotify(true);
         }
       },
       cancelToken: new CancelToken(
@@ -121,6 +123,7 @@ function PleaseUpload({ file }) {
 
         setTimeout(() => {
           setUploadPercentage(0);
+          setUploadsNotify(false);
         }, 1000);
 
         //save file to DB
@@ -149,7 +152,7 @@ function PleaseUpload({ file }) {
         >
           <HStack>
             <TypeIdentifier fileType={createExtension(file.name)} />
-            <Text>{file.name}</Text>
+            <Text>{nameFormatter(file.name)}</Text>
           </HStack>
           <HStack>
             <Box>
@@ -209,14 +212,20 @@ function PleaseUpload({ file }) {
   );
 }
 
-export default function CreateUploads() {
+export default function CreateUploads({ setUploadsNotify }) {
   const { files } = useSelector(state => state.uploadManager);
   console.log(files);
   return (
     <>
       {files.map(file =>
         file.map((f, index) => {
-          return <PleaseUpload key={index} file={f} />;
+          return (
+            <PleaseUpload
+              key={index}
+              file={f}
+              setUploadsNotify={setUploadsNotify}
+            />
+          );
         })
       )}
     </>

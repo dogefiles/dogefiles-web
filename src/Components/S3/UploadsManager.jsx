@@ -11,7 +11,7 @@ import { FiUploadCloud, FiPlus } from "react-icons/fi";
 import CreateUploads from "Components/S3/CreateUploads";
 
 export default function Manager() {
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = useState(false);
   return (
     <Flex>
       <Tooltip
@@ -33,7 +33,7 @@ export default function Manager() {
         />
       </Tooltip>
       <Flex
-        visibility={toggle ? "hidden" : "display"}
+        visibility={toggle ? "display" : "hidden"}
         direction="column"
         width={["60%", "60%", "40%", "30%"]}
         boxShadow="md"
@@ -57,7 +57,7 @@ export default function Manager() {
         <Divider />
 
         {/* Create Uploads */}
-        <CreateUploads />
+        <CreateUploads setUploadsNotify={setToggle} />
       </Flex>
     </Flex>
   );
