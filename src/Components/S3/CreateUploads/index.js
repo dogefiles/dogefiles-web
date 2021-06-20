@@ -214,7 +214,7 @@ function PleaseUpload({ file, setUploadsNotify }) {
 
 export default function CreateUploads({ setUploadsNotify }) {
   const { files } = useSelector(state => state.uploadManager);
-  // console.log(files);
+
   return (
     <>
       {files.map(file =>

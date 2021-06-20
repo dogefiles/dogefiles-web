@@ -2,13 +2,47 @@ import { Tooltip, Button, useToast } from "@chakra-ui/react";
 import { FiPlus } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { UPLOADS_ON } from "State/constants";
+import { useAuth } from "Utils/AuthContext";
+import { useQuery } from "react-query";
+import { listUploads } from "APIs/s3";
+
+const uploadLimitter = (data, files) => {
+  let spaceUsed = 0;
+  let filesSize = 0;
+  let spaceLeft = 20;
+  data.forEach(file => (spaceUsed += file.fileSize));
+  spaceUsed = spaceUsed / 1e9; //GB
+
+  files.forEach(file => (filesSize += file.size));
+  filesSize = filesSize / 1e9; //GB
+
+  spaceLeft = spaceLeft - spaceUsed;
+
+  if (filesSize < spaceLeft) return true;
+  return false;
+};
 
 export default function NewButton() {
   const toast = useToast();
   const dispatch = useDispatch();
+  const { currentUser } = useAuth();
+
+  const { data, refetch } = useQuery("listUploads", () =>
+    listUploads(currentUser.uid)
+  );
 
   const updateUploadManager = e => {
-    const files = [...e.target.files];
+    let files = [...e.target.files];
+    if (data) {
+      if (!uploadLimitter(data, files)) {
+        files = [];
+        return toast({
+          title: `You don't have enough storage available, Please Upgrade`,
+          status: "error",
+          isClosable: true,
+        });
+      }
+    }
     if (files.length > 20) {
       return toast({
         title: `You can't upload more than 20 files at once`,
@@ -36,6 +70,7 @@ export default function NewButton() {
     if (updatedFiles.length === 0) return;
 
     dispatch({ type: UPLOADS_ON, payload: updatedFiles });
+    refetch();
   };
 
   return (
@@ -45,7 +80,7 @@ export default function NewButton() {
         type="file"
         multiple
         hidden
-        onChange={updateUploadManager}
+        onChange={e => updateUploadManager(e)}
       />
       <label htmlFor="upload">
         <Tooltip

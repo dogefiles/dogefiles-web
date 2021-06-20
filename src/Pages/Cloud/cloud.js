@@ -16,7 +16,7 @@ export default function Cloud() {
 
   const { fetchValue } = useSelector(state => state.refetchR);
 
-  const { isLoading, data, refetch, isError } = useQuery(
+  const { data, refetch, isError } = useQuery(
     "listUploads",
     () => listUploads(currentUser.uid),
     {
