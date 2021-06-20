@@ -1,4 +1,4 @@
-import { Flex, Text, VStack, Spinner, Heading } from "@chakra-ui/react";
+import { Flex, Text, VStack, Heading } from "@chakra-ui/react";
 import { Helmet } from "react-helmet";
 
 import { useAuth } from "Utils/AuthContext";
@@ -52,12 +52,14 @@ export default function Cloud() {
         <meta content="Cloud - Dogefiles" property="og:title" />
         <link rel="canonical" href="https://app.dogefiles.io/cloud" />
       </Helmet>
-      {isLoading ? (
-        <Spinner size="xl" />
-      ) : isError ? (
+      {!data ? (
         <VStack alignItems="center" justifyContent="center" height="100%">
           <Heading>Your ☁ is Empty</Heading>
           <FirstUploadButton />
+        </VStack>
+      ) : isError ? (
+        <VStack alignItems="center" justifyContent="center" height="100%">
+          <Heading>Opps there was an error</Heading>
         </VStack>
       ) : (
         <VStack align="left">
