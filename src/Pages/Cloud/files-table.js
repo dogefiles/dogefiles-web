@@ -7,6 +7,7 @@ import {
   Td,
   Flex,
   useToast,
+  Tooltip,
   Button,
   Text,
   useColorModeValue,
@@ -16,10 +17,10 @@ import { useAuth } from "Utils/AuthContext";
 import { useDispatch } from "react-redux";
 import {
   FiDelete,
-  FiEye,
-  FiEyeOff,
   FiShare2,
   FiDownload,
+  FiLock,
+  FiUnlock,
 } from "react-icons/fi";
 import { TypeIdentifier } from "Components/Others";
 import { useState } from "react";
@@ -97,22 +98,33 @@ export default function FilesTable({ files }) {
                     </Td>
                     <Td>{fileSizeFormatter(file.fileSize)}</Td>
                     <Td>
-                      <Button
-                        variant="outline"
-                        border="none"
-                        color={tableBtnColor}
-                        isLoading={privacyBtnLoading}
-                        onClick={() => {
-                          setPrivacyBtnLoading(true);
-                          updatePrivacyS3(
-                            currentUser.uid,
-                            file.key,
-                            file.privacy === "private" ? "public" : "private"
-                          );
-                        }}
+                      <Tooltip
+                        hasArrow
+                        arrowSize={6}
+                        bg="primary.400"
+                        label={`${file.privacy}`}
                       >
-                        {file.privacy === "private" ? <FiEyeOff /> : <FiEye />}
-                      </Button>
+                        <Button
+                          variant="outline"
+                          border="none"
+                          color={tableBtnColor}
+                          isLoading={privacyBtnLoading}
+                          onClick={() => {
+                            setPrivacyBtnLoading(true);
+                            updatePrivacyS3(
+                              currentUser.uid,
+                              file.key,
+                              file.privacy === "private" ? "public" : "private"
+                            );
+                          }}
+                        >
+                          {file.privacy === "private" ? (
+                            <FiLock />
+                          ) : (
+                            <FiUnlock />
+                          )}
+                        </Button>
+                      </Tooltip>
                     </Td>
                     <Td isTruncated>
                       {new Date(file.createdAt).toLocaleString()}
@@ -124,51 +136,76 @@ export default function FilesTable({ files }) {
                     </Td>
                     <Td>
                       <Flex justifyContent="space-between" alignItems="center">
-                        <Button
-                          variant="outline"
-                          border="none"
-                          color={tableBtnColor}
-                          onClick={() =>
-                            (window.location.href = `https://dogefiles.io/download/${file._id}`)
-                          }
+                        <Tooltip
+                          hasArrow
+                          arrowSize={6}
+                          bg="primary.400"
+                          label={"Download"}
                         >
-                          <FiDownload />
-                        </Button>
-                        {/* Copy download link */}
-                        <Button
-                          variant="outline"
-                          border="none"
-                          color={tableBtnColor}
-                          onClick={() => {
-                            toast({
-                              title: "Copied",
-                              description: "Download link copied to clipboard",
-                              position: "top-right",
-                              status: "success",
-                              duration: 2000,
-                              isClosable: true,
-                            });
-                            copyDownloadLink(file._id);
-                          }}
+                          <Button
+                            variant="outline"
+                            border="none"
+                            color={tableBtnColor}
+                            onClick={() =>
+                              window.open(
+                                `https://dogefiles.io/download/${file._id}`,
+                                "_blank"
+                              )
+                            }
+                          >
+                            <FiDownload />
+                          </Button>
+                        </Tooltip>
+                        {/* Copy download link or share */}
+                        <Tooltip
+                          hasArrow
+                          arrowSize={6}
+                          bg="primary.400"
+                          label={"Share"}
                         >
-                          <FiShare2 />
-                        </Button>
+                          <Button
+                            variant="outline"
+                            border="none"
+                            color={tableBtnColor}
+                            onClick={() => {
+                              toast({
+                                title: "Copied",
+                                description:
+                                  "Download link copied to clipboard",
+                                position: "top-right",
+                                status: "success",
+                                duration: 2000,
+                                isClosable: true,
+                              });
+                              copyDownloadLink(file._id);
+                            }}
+                          >
+                            <FiShare2 />
+                          </Button>
+                        </Tooltip>
 
                         {/* Delete File */}
-                        <Button
-                          variant="outline"
-                          border="none"
-                          color={tableBtnColor}
-                          onClick={() => {
-                            const request = window.confirm(
-                              "Are you sure you want to delete the file ?"
-                            );
-                            if (!request) return;
-                            deleteFileS3(file.key);
-                          }}
+                        <Tooltip
+                          hasArrow
+                          arrowSize={6}
+                          bg="primary.400"
+                          label={"Delete"}
                         >
-                          <FiDelete />
-                        </Button>
+                          <Button
+                            variant="outline"
+                            border="none"
+                            color={tableBtnColor}
+                            onClick={() => {
+                              const request = window.confirm(
+                                "Are you sure you want to delete the file ?"
+                              );
+                              if (!request) return;
+                              deleteFileS3(file.key);
+                            }}
+                          >
+                            <FiDelete />
+                          </Button>
+                        </Tooltip>
                       </Flex>
                     </Td>
                   </Tr>
