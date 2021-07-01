@@ -11,11 +11,12 @@ import { useState } from "react";
 import { useAuth } from "Utils/AuthContext";
 import { Helmet } from "react-helmet";
 import uploadAvatar from "./settings.UploadAvatar";
-import { S3_AVATAR_UPLOADS_URL } from "Constants/S3";
+import { S3_AVATAR_UPLOADS_URL, DOGEFILES_AVATAR_BUCKET } from "Constants/S3";
 
 const AvatarBucketURL = S3_AVATAR_UPLOADS_URL;
 
 export default function Settings() {
+  console.log(process.env.NODE_ENV, DOGEFILES_AVATAR_BUCKET);
   const toast = useToast();
   const {
     currentUser,
