@@ -6,17 +6,24 @@ import {
   Input,
   Avatar,
   useToast,
+  Heading,
+  Box,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAuth } from "Utils/AuthContext";
 import { Helmet } from "react-helmet";
 import uploadAvatar from "./settings.UploadAvatar";
 import { S3_AVATAR_UPLOADS_URL, DOGEFILES_AVATAR_BUCKET } from "Constants/S3";
+import SettingsSocialMedia from "./settings.socialMedia";
 
 const AvatarBucketURL = S3_AVATAR_UPLOADS_URL;
 
 export default function Settings() {
-  console.log(process.env.NODE_ENV, DOGEFILES_AVATAR_BUCKET, S3_AVATAR_UPLOADS_URL);
+  console.log(
+    process.env.NODE_ENV,
+    DOGEFILES_AVATAR_BUCKET,
+    S3_AVATAR_UPLOADS_URL
+  );
   const toast = useToast();
   const {
     currentUser,
@@ -115,49 +122,65 @@ export default function Settings() {
       </Helmet>
 
       <VStack>
-        <form onSubmit={updateProfile}>
-          <FormControl>
-            <Avatar
-              size="2xl"
-              name="Segun Adebayo"
-              src={file ? URL.createObjectURL(file) : currentUser.photoURL}
-            />
-            <FormLabel>Profile Picture</FormLabel>
-            <Input type="file" onChange={e => setFile(e.target.files[0])} />
-            <FormLabel>Display Name</FormLabel>
-            <Input value={newName} onChange={e => setNewName(e.target.value)} />
-            {userAuthProvider !== "google.com" && (
-              <>
-                <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                />
-                <FormLabel>Repeat Password</FormLabel>
-                <Input
-                  type="password"
-                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                  value={passwordRepeat}
-                  onChange={e => setPasswordRepeat(e.target.value)}
-                />
-              </>
-            )}
-            <Button
-              type="submit"
-              my={2}
-              bg="primary.400"
-              color="white"
-              _hover={{ bg: "primary.500" }}
-              isLoading={loading}
-            >
-              Update
-            </Button>
-          </FormControl>
-        </form>
+        <Box
+          border="1px"
+          borderColor="gray.300"
+          borderRadius="6px"
+          p={2}
+          width="100%"
+        >
+          {/* <Text>Account Info</Text> */}
+          <Heading as={"h3"} size="md">
+            Account Info
+          </Heading>
+          <form onSubmit={updateProfile}>
+            <FormControl>
+              <Avatar
+                size="2xl"
+                name="Segun Adebayo"
+                src={file ? URL.createObjectURL(file) : currentUser.photoURL}
+              />
+              <FormLabel>Profile Picture</FormLabel>
+              <Input type="file" onChange={e => setFile(e.target.files[0])} />
+              <FormLabel>Display Name</FormLabel>
+              <Input
+                value={newName}
+                onChange={e => setNewName(e.target.value)}
+              />
+              {userAuthProvider !== "google.com" && (
+                <>
+                  <FormLabel>Password</FormLabel>
+                  <Input
+                    type="password"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                  />
+                  <FormLabel>Repeat Password</FormLabel>
+                  <Input
+                    type="password"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                    value={passwordRepeat}
+                    onChange={e => setPasswordRepeat(e.target.value)}
+                  />
+                </>
+              )}
+              <Button
+                type="submit"
+                my={2}
+                bg="primary.400"
+                color="white"
+                _hover={{ bg: "primary.500" }}
+                isLoading={loading}
+              >
+                Update
+              </Button>
+            </FormControl>
+          </form>
+        </Box>
+        <SettingsSocialMedia />
       </VStack>
     </>
   );
