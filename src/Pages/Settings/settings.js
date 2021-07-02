@@ -16,7 +16,7 @@ import { S3_AVATAR_UPLOADS_URL, DOGEFILES_AVATAR_BUCKET } from "Constants/S3";
 const AvatarBucketURL = S3_AVATAR_UPLOADS_URL;
 
 export default function Settings() {
-  console.log(process.env.NODE_ENV, DOGEFILES_AVATAR_BUCKET);
+  console.log(process.env.NODE_ENV, DOGEFILES_AVATAR_BUCKET, S3_AVATAR_UPLOADS_URL);
   const toast = useToast();
   const {
     currentUser,

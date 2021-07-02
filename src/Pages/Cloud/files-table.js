@@ -26,6 +26,7 @@ import { TypeIdentifier } from "Components/Others";
 import { useState } from "react";
 import nameFormatter from "Utils/nameFormatter";
 import fileSizeFormatter from "Utils/fileSizeFormatter";
+import {DOGEFILES_MAIN_BUCKET} from "Constants/S3";
 
 const copyDownloadLink = id => {
   let tempInput = document.createElement("input");
@@ -47,7 +48,7 @@ export default function FilesTable({ files }) {
   const tableBorderColor = useColorModeValue("gray.200", "gray.600");
 
   const deleteFileS3 = async key => {
-    await deleteFile("dogefiles-main", key, currentUser.uid);
+    await deleteFile(DOGEFILES_MAIN_BUCKET, key, currentUser.uid);
     dispatch(() => dispatch({ type: "cloud" }));
   };
 

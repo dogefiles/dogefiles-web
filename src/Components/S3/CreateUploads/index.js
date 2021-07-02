@@ -28,6 +28,7 @@ import { FiX } from "react-icons/fi";
 import { TypeIdentifier } from "Components/Others";
 import { useDispatch } from "react-redux";
 import nameFormatter from "Utils/nameFormatter";
+import { DOGEFILES_MAIN_BUCKET } from "Constants/S3";
 
 const getPresignedUrl = async (fileInfo, config) => {
   const { data } = await presignedUrl(fileInfo, config);
@@ -88,7 +89,7 @@ function PleaseUpload({ file, setUploadsNotify }) {
     };
 
     const data = {
-      bucket: "dogefiles-main",
+      bucket: DOGEFILES_MAIN_BUCKET,
       ...fields,
       "Content-Type": fileExtension,
       file: file,
@@ -214,7 +215,7 @@ function PleaseUpload({ file, setUploadsNotify }) {
 
 export default function CreateUploads({ setUploadsNotify }) {
   const { files } = useSelector(state => state.uploadManager);
-
+  
   return (
     <>
       {files.map(file =>

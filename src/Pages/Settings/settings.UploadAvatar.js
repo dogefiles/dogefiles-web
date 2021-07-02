@@ -1,5 +1,6 @@
 import { presignedAvatarUrl, deleteFile } from "APIs/s3";
 import Axios from "Utils/Axios";
+import { DOGEFILES_AVATAR_BUCKET } from "Constants/S3";
 
 const getPresignedUrl = async (fileInfo, config) => {
   const { data } = await presignedAvatarUrl(fileInfo, config);
@@ -27,7 +28,7 @@ export default async function uploadAvatar(
   const { url, fields } = await getPresignedUrl(fileInfo, config);
 
   const data = {
-    bucket: "dogefiles-avatar",
+    bucket: DOGEFILES_AVATAR_BUCKET,
     ...fields,
     "Content-Type": file.type,
     file: file,
@@ -40,7 +41,7 @@ export default async function uploadAvatar(
 
   return await Axios.post(url, formData).then(async () => {
     if (avatarKey) {
-      await deleteFile("dogefiles-avatar", avatarKey, firebaseId);
+      await deleteFile(DOGEFILES_AVATAR_BUCKET, avatarKey, firebaseId);
     }
     const photoURL = `${url}/${fields.key}`;
     return photoURL;
