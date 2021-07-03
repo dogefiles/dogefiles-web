@@ -8,22 +8,20 @@ import {
   useToast,
   Heading,
   Box,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAuth } from "Utils/AuthContext";
 import { Helmet } from "react-helmet";
 import uploadAvatar from "./settings.UploadAvatar";
-import { S3_AVATAR_UPLOADS_URL, DOGEFILES_AVATAR_BUCKET } from "Constants/S3";
+import { S3_AVATAR_UPLOADS_URL } from "Constants/S3";
 import SettingsSocialMedia from "./settings.socialMedia";
 
 const AvatarBucketURL = S3_AVATAR_UPLOADS_URL;
 
 export default function Settings() {
-  console.log(
-    process.env.NODE_ENV,
-    DOGEFILES_AVATAR_BUCKET,
-    S3_AVATAR_UPLOADS_URL
-  );
+  const borderColor = useColorModeValue("gray.300", "gray.600");
+
   const toast = useToast();
   const {
     currentUser,
@@ -124,7 +122,7 @@ export default function Settings() {
       <VStack>
         <Box
           border="1px"
-          borderColor="gray.300"
+          borderColor={borderColor}
           borderRadius="6px"
           p={2}
           width="100%"

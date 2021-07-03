@@ -39,7 +39,7 @@ export default function SimpleCard({ history, location }) {
 
       const userToken = await getUserToken();
       await userCheck(userToken)
-        .then(res => {
+        .then(async res => {
           toast({
             title: `Welcome Back, ${currentUser.displayName}`,
             status: "success",
@@ -49,6 +49,7 @@ export default function SimpleCard({ history, location }) {
           if (location.search.includes("settings")) {
             return history.push("/settings");
           }
+
           return history.push("/");
         })
         .catch(err => {

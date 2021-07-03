@@ -13,8 +13,8 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
-
   const queryClient = useQueryClient();
+
   const dispatch = useDispatch();
 
   function signup(email, password) {
@@ -92,7 +92,7 @@ export function AuthProvider({ children }) {
     googleOAuth,
   };
 
-  // console.log(currentUser);
+  console.log(process.env.NODE_ENV === "development" && currentUser);
 
   return (
     <AuthContext.Provider value={value}>
