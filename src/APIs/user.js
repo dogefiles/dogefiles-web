@@ -10,16 +10,34 @@ export const userInfo = async userToken => {
   return data;
 };
 
-export const updateAbout = async (userToken, about) => {
+export const updateContact = async (userToken, contact) => {
   const config = {
     headers: {
       Authorization: `Bearer ${userToken}`,
     },
   };
+
   const { data } = await Axios.put(
-    "/user/updateAbout",
+    "/user/updateContact",
     {
-      about,
+      contact,
+    },
+    config
+  );
+  return data;
+};
+
+export const updateContactVisibility = async (userToken, contactVisibility) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  };
+
+  const { data } = await Axios.put(
+    "/user/updateContactVisibility",
+    {
+      contactVisibility,
     },
     config
   );

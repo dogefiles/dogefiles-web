@@ -15,7 +15,7 @@ import { useAuth } from "Utils/AuthContext";
 import { Helmet } from "react-helmet";
 import uploadAvatar from "./settings.UploadAvatar";
 import { S3_AVATAR_UPLOADS_URL } from "Constants/S3";
-import SettingsSocialMedia from "./settings.socialMedia";
+import SettingsUserContact from "./settings.userContact.js";
 
 const AvatarBucketURL = S3_AVATAR_UPLOADS_URL;
 
@@ -178,7 +178,7 @@ export default function Settings() {
             </FormControl>
           </form>
         </Box>
-        <SettingsSocialMedia />
+        <SettingsUserContact />
       </VStack>
     </>
   );
