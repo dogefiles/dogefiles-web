@@ -52,14 +52,14 @@ export default function NewButton() {
     }
     //Prevent large files from uploading
     const updatedFiles = files.filter(file => {
-      if (file.size > 1.01e8) {
+      if (file.size > 2.01e+8) {
         toast({
           title: `${file.name} is removed due to large size !`,
           status: "warning",
           isClosable: true,
         });
         toast({
-          title: `Max Limit is 100MB`,
+          title: `Max Limit is 200 MB`,
           status: "success",
           isClosable: true,
         });
