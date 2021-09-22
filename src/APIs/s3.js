@@ -24,7 +24,7 @@ export const listUploads = async firebaseId => {
   const { data } = await Axios.post("/S3/listUploads", {
     firebaseId,
   });
-  return data;
+  return data.files;
 };
 
 export const updatePrivacy = async (firebaseId, key, privacy) => {

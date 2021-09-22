@@ -44,6 +44,10 @@ export default function Cloud() {
   //   }
   // }
 
+  if (data) {
+    console.log(data);
+  }
+
   return (
     <>
       <Helmet>
