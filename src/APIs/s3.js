@@ -20,12 +20,12 @@ export const deleteFile = async (bucket, key, firebaseId) =>
   });
 
 // List Uploads for ReactQuery
-export const listUploads = async firebaseId => {
+export const listUploads = async (firebaseId, page) => {
   const { data } = await Axios.post("/S3/listUploads", {
     firebaseId,
+    page,
   });
-  console.log(data);
-  return data.files;
+  return data;
 };
 
 export const updatePrivacy = async (firebaseId, key, privacy) => {

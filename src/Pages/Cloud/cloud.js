@@ -1,35 +1,53 @@
-import { Flex, Text, VStack, Heading } from "@chakra-ui/react";
+import { Flex, Text, VStack, Heading, Button } from "@chakra-ui/react";
 import { Helmet } from "react-helmet";
-
+import { useHistory } from "react-router-dom";
 import { useAuth } from "Utils/AuthContext";
-import { useQuery } from "react-query";
+// import { useQuery } from "react-query";
 import { listUploads } from "APIs/s3";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FilesTable from "./files-table";
 // import { DownloadsChart, UploadsChart } from "Components/Charts";
 import FirstUploadButton from "Components/Layout/Navbar.NewButton";
 
 export default function Cloud() {
+  const history = useHistory();
+  const [page, setPage] = useState(1);
+  const [data, setData] = useState(null);
+  const [isError, setError] = useState(null);
+
   const { currentUser } = useAuth();
   const dispatch = useDispatch();
 
   const { fetchValue } = useSelector(state => state.refetchR);
 
-  const { data, refetch, isError } = useQuery(
-    "listUploads",
-    () => listUploads(currentUser.uid),
-    {
-      cacheTime: 0,
+  const fetchListUploads = useCallback(async () => {
+    try {
+      const res = await listUploads(currentUser.uid, page);
+      setData(res);
+    } catch (err) {
+      setError(err);
     }
-  );
+  }, [currentUser, page]);
+
+  useEffect(() => {
+    return fetchListUploads();
+  }, [page, fetchListUploads]);
+
+  // const { data, refetch, isError } = useQuery(
+  //   "listUploads",
+  //   () => listUploads(currentUser.uid, page.current),
+  //   {
+  //     cacheTime: 0,
+  //   }
+  // );
 
   useEffect(() => {
     if (fetchValue !== "cloud") return;
 
-    refetch();
+    fetchListUploads();
     dispatch(() => dispatch({ type: "toggle" })); //this toggle will clean the last state it helps in automatic refreshing
-  }, [fetchValue, dispatch, refetch]);
+  }, [fetchValue, fetchListUploads, dispatch]);
 
   // Extract downloads from the data and give it to charts
   // let downloads = null;
@@ -43,10 +61,6 @@ export default function Cloud() {
   //     }
   //   }
   // }
-
-  if (data) {
-    console.log(data);
-  }
 
   return (
     <>
@@ -63,7 +77,10 @@ export default function Cloud() {
         </VStack>
       ) : isError ? (
         <VStack alignItems="center" justifyContent="center" height="100%">
-          <Heading>Opps there was an error</Heading>
+          <Heading>No more files</Heading>
+          <Button mx="1" onClick={() => history.push("/")}>
+            Home
+          </Button>
         </VStack>
       ) : (
         <VStack align="left">
@@ -94,6 +111,18 @@ export default function Cloud() {
             }}
           >
             {data !== undefined && <FilesTable files={data} />}
+          </Flex>
+          <Flex justifyContent="center">
+            <Button
+              mx="1"
+              // don't decrement if page is already 0
+              onClick={() => (page === 1 ? 1 : setPage(prev => prev - 1))}
+            >
+              {"<<"}
+            </Button>
+            <Button mx="1" onClick={() => setPage(prev => prev + 1)}>
+              {">>"}
+            </Button>
           </Flex>
         </VStack>
       )}
