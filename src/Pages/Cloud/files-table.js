@@ -26,7 +26,7 @@ import { TypeIdentifier } from "Components/Others";
 import { useState } from "react";
 import nameFormatter from "Utils/nameFormatter";
 import fileSizeFormatter from "Utils/fileSizeFormatter";
-import {DOGEFILES_MAIN_BUCKET} from "Constants/S3";
+import { DOGEFILES_MAIN_BUCKET } from "Constants/S3";
 
 const copyDownloadLink = id => {
   let tempInput = document.createElement("input");
@@ -131,9 +131,10 @@ export default function FilesTable({ files }) {
                       {new Date(file.createdAt).toLocaleString()}
                     </Td>
                     <Td isNumeric>
-                      {file.downloads && file.downloads.length > 0
+                      {/* {file.downloads && file.downloads.length > 0
                         ? file.downloads.length
-                        : 0}
+                        : 0} */}
+                      {file.downloads ? file.downloads : 0}
                     </Td>
                     <Td>
                       <Flex justifyContent="space-between" alignItems="center">
