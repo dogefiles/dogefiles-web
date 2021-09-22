@@ -32,17 +32,17 @@ export default function Cloud() {
   }, [fetchValue, dispatch, refetch]);
 
   // Extract downloads from the data and give it to charts
-  let downloads = null;
-  let downloadDates = [];
-  if (data) {
-    downloads = data.map(d => d.downloads); //extracted all download objects
+  // let downloads = null;
+  // let downloadDates = [];
+  // if (data) {
+  //   downloads = data.map(d => d.downloads); //extracted all download objects
 
-    for (let i = 0; i < downloads.length; i++) {
-      for (let j = 0; j < downloads[i].length; j++) {
-        downloadDates.push(downloads[i][j].createdAt);
-      }
-    }
-  }
+  //   for (let i = 0; i < downloads.length; i++) {
+  //     for (let j = 0; j < downloads[i].length; j++) {
+  //       downloadDates.push(downloads[i][j].createdAt);
+  //     }
+  //   }
+  // }
 
   return (
     <>
@@ -63,13 +63,13 @@ export default function Cloud() {
         </VStack>
       ) : (
         <VStack align="left">
-          <Flex
+          {/* <Flex
             flexDirection={["column", "column", "column", "row"]}
             justifyContent="space-between"
           >
             {data && <DownloadsChart data={downloadDates} />}
             {data !== undefined && <UploadsChart data={data} />}
-          </Flex>
+          </Flex> */}
           <Text color="gray.400">Recents</Text>
           <Flex
             overflowX="auto"
