@@ -7,7 +7,7 @@ import { listUploads } from "APIs/s3";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FilesTable from "./files-table";
-import { DownloadsChart, UploadsChart } from "Components/Charts";
+// import { DownloadsChart, UploadsChart } from "Components/Charts";
 import FirstUploadButton from "Components/Layout/Navbar.NewButton";
 
 export default function Cloud() {
