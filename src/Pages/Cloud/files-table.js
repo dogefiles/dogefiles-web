@@ -90,7 +90,7 @@ export default function FilesTable({ files }) {
             {files &&
               files.map(file => {
                 return (
-                  <Tr key={file.key} onContextMenu={() => alert("Right Click")}>
+                  <Tr key={file.key}>
                     <Td>
                       <Flex alignItems="center">
                         <TypeIdentifier fileType={file.fileType} />
