@@ -6,7 +6,7 @@ import { Text, Link, Flex } from "@chakra-ui/react";
 import { FiArrowLeft } from "react-icons/fi";
 import { Link as ReactLink } from "react-router-dom";
 import { useAuth } from "Utils/AuthContext";
-import { listUploads } from "APIs/s3";
+import { listUploads, searchUploads } from "APIs/s3";
 
 export default function Folder() {
   const { search } = useParams();
@@ -22,12 +22,21 @@ export default function Folder() {
   }, [data, refetch]);
 
   useEffect(() => {
-    if (!data) return;
-    const getFileNames = data.filter(file =>
-      file.fileName.toLowerCase().includes(search.toLowerCase())
-    );
-    setFileNames(getFileNames);
-  }, [data, search]);
+    if (!data || !currentUser || !search) return;
+
+    const fetchSearchedTerm = async () => {
+      const data = await searchUploads(currentUser.uid, search);
+      if (!data) return;
+      setFileNames(data);
+    };
+
+    // const getFileNames = data.filter(file =>
+    //   file.fileName.toLowerCase().includes(search.toLowerCase())
+    // );
+    // setFileNames(getFileNames);
+
+    fetchSearchedTerm();
+  }, [data, search, currentUser]);
 
   return (
     <>

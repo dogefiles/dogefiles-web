@@ -8,11 +8,14 @@ import {
   Tag,
   TagLabel,
   Flex,
+  Icon,
+  Tooltip
 } from "@chakra-ui/react";
 import { useAuth } from "Utils/AuthContext";
 import { useQuery } from "react-query";
 import { listUploads } from "APIs/s3";
 import { useEffect } from "react";
+import {FaDog} from "react-icons/fa";
 
 export default function Storage() {
   const storageBg = useColorModeValue("white", "gray.700");
@@ -28,15 +31,15 @@ export default function Storage() {
     refetch();
   }, [data, refetch]);
 
-  let spaceLeft = 20;
+  // let spaceLeft = 20;
   let spaceUsed = 0;
-  let percentage = 0;
+  // let percentage = 0;
   if (data) {
     data.forEach(file => (spaceUsed += file.fileSize));
     spaceUsed = spaceUsed / 1e9; //GB
     // spaceUsed = spaceUsed / 1e6; //MB
-    percentage = (spaceUsed / 20) * 100;
-    spaceLeft = spaceLeft - spaceUsed;
+    // percentage = (spaceUsed / 20) * 100;
+    // spaceLeft = spaceLeft - spaceUsed;
   }
 
   return (
@@ -51,17 +54,22 @@ export default function Storage() {
             color="primary.400"
             size="100px"
           >
-            <CircularProgressLabel>
-              {percentage ? percentage.toFixed(2) : 0}%
-            </CircularProgressLabel>
+            <Tooltip label="bow wow">
+              <CircularProgressLabel>
+                {/* {percentage ? percentage.toFixed(2) : 0}% */}
+                <Icon w={8} as={FaDog} />
+              </CircularProgressLabel>
+            </Tooltip>
           </CircularProgress>
         </Box>
-        <VStack>
+        <VStack mx="5">
           <Tag size="md" colorScheme="blue">
-            <TagLabel>{spaceLeft.toFixed(2)} GB Left</TagLabel>
+            {/* <TagLabel>{spaceLeft.toFixed(2)} GB Left</TagLabel> */}
+            <TagLabel>Unlimited</TagLabel>
           </Tag>
           <Tag size="md" color="primary.400">
-            <TagLabel>{spaceUsed ? spaceUsed.toFixed(2) : 0} GB Used</TagLabel>
+            {/* <TagLabel>{spaceUsed ? spaceUsed.toFixed(2) : 0} GB Used</TagLabel> */}
+            <TagLabel>Storage</TagLabel>
           </Tag>
         </VStack>
       </Flex>

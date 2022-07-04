@@ -28,6 +28,15 @@ export const listUploads = async (firebaseId, page) => {
   return data;
 };
 
+export const searchUploads = async (firebaseId, searchTerm) => {
+  const { data } = await Axios.post("/S3/searchUploads", {
+    firebaseId,
+    searchTerm,
+  });
+
+  return data;
+};
+
 export const updatePrivacy = async (firebaseId, key, privacy) => {
   const { data } = await Axios.post("/S3/updatePrivacy", {
     firebaseId,

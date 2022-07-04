@@ -21,7 +21,7 @@ import {
   FiSettings,
   // FiTrash2,
   // FiUploadCloud,
-  FiDollarSign,
+  // FiDollarSign,
 } from "react-icons/fi";
 import { Link as ReactLink, useLocation } from "react-router-dom";
 import NewButton from "./Navbar.NewButton";
@@ -78,7 +78,7 @@ const Nav = () => {
       <NavLinks Icon={FiCloud} Title="Cloud" />
       {/* <NavLinks Icon={FiUploadCloud} Title="Upload" /> */}
       {/* <NavLinks Icon={FiTrash2} Title="Bin" /> */}
-      <NavLinks Icon={FiDollarSign} Title="Earnings" />
+      {/* <NavLinks Icon={FiDollarSign} Title="Earnings" /> */}
       <NavLinks Icon={FiSettings} Title="Settings" />
 
       {/* Storage  */}
