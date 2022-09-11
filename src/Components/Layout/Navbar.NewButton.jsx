@@ -22,6 +22,44 @@ const uploadLimitter = (data, files) => {
   return false;
 };
 
+const extensions = [
+  "BAT",
+  "BIN",
+  "CMD",
+  "COM",
+  "CPL",
+  "EXE",
+  "GADGET",
+  "INF1",
+  "INS",
+  "INX",
+  "ISU",
+  "JOB",
+  "JSE",
+  "LNK",
+  "MSC",
+  "MSI",
+  "MSP",
+  "MST",
+  "PAF",
+  "PIF",
+  "PS1",
+  "REG",
+  "RGS",
+  "SCR",
+  "SCT",
+  "SHB",
+  "SHS",
+  "U3P",
+  "VB",
+  "VBE",
+  "VBS",
+  "VBSCRIPT",
+  "WS",
+  "WSF",
+  "WSH"
+]
+
 export default function NewButton() {
   const toast = useToast();
   const dispatch = useDispatch();
@@ -43,6 +81,7 @@ export default function NewButton() {
         });
       }
     }
+
     if (files.length > 20) {
       return toast({
         title: `You can't upload more than 20 files at once`,
@@ -50,7 +89,7 @@ export default function NewButton() {
         isClosable: true,
       });
     }
-    //Prevent large files from uploading
+    //Prevent executables and large files from uploading
     const updatedFiles = files.filter(file => {
       if (file.size > 2.01e+8) {
         toast({
@@ -61,6 +100,15 @@ export default function NewButton() {
         toast({
           title: `Max Limit is 200 MB`,
           status: "success",
+          isClosable: true,
+        });
+        return null;
+      }
+
+      if (extensions.includes(file.name.split(".").pop().toUpperCase())) {
+        toast({
+          title: `${file.name} Windows executables are not allowed !`,
+          status: "warning",
           isClosable: true,
         });
         return null;
